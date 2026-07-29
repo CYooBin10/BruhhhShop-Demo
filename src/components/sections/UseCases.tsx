@@ -1,21 +1,12 @@
 import { Icon } from "@/components/ui/Icon";
 
 const useCases = [
-  ["globe", "Hosting website", "Website cá nhân, landing page hoặc cửa hàng online."],
-  ["gamepad", "Server Minecraft", "Không gian riêng cho server game cùng bạn bè."],
-  ["headphones", "Bot Discord", "Chạy bot ổn định, hoạt động xuyên suốt."],
-  ["code", "Backend & API", "Môi trường gọn để đưa API vào vận hành."],
-  ["terminal", "Môi trường lập trình", "Tự do thử nghiệm và xây dựng theo cách của bạn."],
-  ["palette", "Dự án cá nhân", "Từ ý tưởng đầu tiên đến sản phẩm hoàn chỉnh."],
+  ["gamepad", "Server Minecraft Paper/Purpur", "Phù hợp server vừa phải, hiệu năng thực tế tùy plugin và map."],
+  ["code", "Website và API", "Chạy website, backend hoặc API cần hoạt động liên tục."],
+  ["headphones", "Bot Discord", "Duy trì bot online mà không phụ thuộc máy cá nhân."],
+  ["terminal", "Ứng dụng chạy 24/7", "Triển khai dịch vụ nền và tác vụ dài hạn."],
 ] as const;
 
 export function UseCases() {
-  return (
-    <section className="section section-use-cases" id="nhu-cau">
-      <div className="container">
-        <div className="section-heading center-heading"><p className="section-label">Một VPS, nhiều cách dùng</p><h2>Phù hợp với nhu cầu <span>của bạn</span></h2><p>Không cần cấu hình phức tạp. Chỉ cần chọn đúng tài nguyên cho công việc.</p></div>
-        <div className="use-case-grid">{useCases.map(([icon, title, description]) => <article className="use-case-card" key={title}><span className="use-case-icon"><Icon name={icon} /></span><h3>{title}</h3><p>{description}</p><span className="use-case-arrow"><Icon name="arrow-up-right" /></span></article>)}</div>
-      </div>
-    </section>
-  );
+  return <section className="section section-use-cases" id="nhu-cau"><div className="container"><div className="section-heading"><div><p className="section-label">Nhu cầu phù hợp</p><h2>Dùng VPS cho <span>việc gì?</span></h2></div></div><div className="use-case-grid use-case-grid-four">{useCases.map(([icon, title, description]) => <article className="use-case-card" key={title}><span className="use-case-icon"><Icon name={icon} /></span><h3>{title}</h3><p>{description}</p></article>)}</div></div></section>;
 }

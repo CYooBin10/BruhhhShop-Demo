@@ -32,6 +32,7 @@ function PolicySidebar({ policy }: { policy: PolicyData }) {
     <aside className="policy-sidebar" aria-label="Mục lục chính sách">
       <span className="policy-menu-title">Chính sách & Điều khoản</span>
       <nav className="policy-page-links">{policyLinks.map((link) => <Link className={link.slug === policy.slug ? "is-current" : ""} href={`/chinh-sach/${link.slug}`} key={link.slug}>{link.label}</Link>)}</nav>
+      <details className="policy-mobile-menu"><summary>Chuyển chính sách</summary><nav>{policyLinks.map((link) => <Link className={link.slug === policy.slug ? "is-current" : ""} href={`/chinh-sach/${link.slug}`} key={link.slug}>{link.label}</Link>)}</nav></details>
       <span className="policy-menu-title policy-toc-title">Mục lục trang</span>
       <nav className="policy-toc">{policy.sections.map((section) => <a href={`#${section.id}`} key={section.id}>{section.title}</a>)}</nav>
       <div className="policy-sidebar-note"><span>Liên hệ hỗ trợ</span><a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a><small>Giờ hỗ trợ: {businessConfig.supportHours}</small></div>

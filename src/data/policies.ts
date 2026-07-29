@@ -3,7 +3,6 @@ import { policyLinks, type PolicySlug } from "@/config/policies";
 import { siteConfig } from "@/config/site";
 import type { PolicyData } from "@/types/site";
 
-const siteConfigContactEmail = siteConfig.contact.email;
 const paymentMethods = businessConfig.paymentMethods.length > 0 ? businessConfig.paymentMethods.join(", ") : unknownValue;
 const refundWindow = businessConfig.refundWindowHours === null ? unknownValue : `${businessConfig.refundWindowHours} giờ đầu`;
 
@@ -11,27 +10,31 @@ export const policies: Record<PolicySlug, PolicyData> = {
   "dieu-khoan-dich-vu": {
     slug: "dieu-khoan-dich-vu",
     title: "Điều khoản dịch vụ",
-    description: "Quy định sử dụng dịch vụ Bruhhh Cloud và trách nhiệm của khách hàng.",
+    description: "Quy định ngắn gọn về thanh toán, sử dụng, gia hạn và trách nhiệm khi dùng VPS.",
     sections: [
-      { id: "thong-tin-khach-hang", title: "Thông tin khách hàng", paragraphs: ["Khách hàng phải cung cấp thông tin liên hệ chính xác và cập nhật khi có thay đổi. Bruhhh Cloud có thể cần thông tin này để xác nhận đơn hàng, hỗ trợ kỹ thuật hoặc gửi thông báo dịch vụ."] },
-      { id: "hanh-vi-bi-cam", title: "Hành vi bị cấm", paragraphs: ["Không được sử dụng VPS để thực hiện hoặc hỗ trợ DDoS, spam, phishing, phát tán malware, botnet, scan trái phép, xâm nhập trái phép hoặc bất kỳ hành vi nào vi phạm pháp luật."] },
-      { id: "su-dung-tai-nguyen", title: "Sử dụng tài nguyên", paragraphs: ["Không được cố tình làm quá tải CPU, RAM, ổ đĩa hoặc mạng trong thời gian dài gây ảnh hưởng đến hệ thống hoặc người dùng khác. Các giới hạn cụ thể được nêu tại Quy định sử dụng tài nguyên."] },
-      { id: "tam-khoa-dich-vu", title: "Tạm khóa dịch vụ", paragraphs: ["Bruhhh Cloud có quyền tạm khóa hoặc giới hạn dịch vụ khi phát hiện hành vi nguy hiểm, hành vi vi phạm điều khoản hoặc rủi ro ảnh hưởng đến hạ tầng. Khi điều kiện cho phép, chúng tôi sẽ thông báo và hướng dẫn xử lý."] },
-      { id: "du-lieu-va-sao-luu", title: "Dữ liệu và sao lưu", paragraphs: [`Khách hàng chịu trách nhiệm sao lưu dữ liệu. Dữ liệu có thể mất nếu VPS bị cài lại, hết hạn hoặc bị khóa do vi phạm điều khoản. Chính sách backup hiện tại: ${businessConfig.infrastructure.backupPolicy}.`] },
-      { id: "bao-tri", title: "Bảo trì và thay đổi dịch vụ", paragraphs: ["Bruhhh Cloud sẽ cố gắng thông báo trước khi bảo trì nếu điều kiện cho phép. Nội dung điều khoản có thể được cập nhật; ngày cập nhật gần nhất được hiển thị ở đầu trang."] },
-      { id: "cap-nhat-dieu-khoan", title: "Cập nhật điều khoản", paragraphs: ["Việc tiếp tục sử dụng dịch vụ sau khi điều khoản được cập nhật được hiểu là khách hàng đã có cơ hội xem nội dung mới. Nếu không đồng ý, khách hàng cần liên hệ trước khi tiếp tục sử dụng."] },
+      { id: "dat-hang-va-kich-hoat", title: "Đặt hàng và kích hoạt", paragraphs: ["Khách hàng cần cung cấp thông tin liên hệ chính xác để xác nhận đơn hàng và nhận thông tin VPS. VPS được bàn giao sau khi thanh toán được xác nhận theo Chính sách thanh toán và bàn giao VPS."] },
+      { id: "thoi-han-va-gia-han", title: "Thời hạn và gia hạn", paragraphs: ["Thời hạn gói được tính theo chu kỳ đã chọn khi đặt hàng. Khách cần chủ động liên hệ gia hạn trước khi hết hạn; nếu không gia hạn, VPS có thể bị ngừng theo quy trình vận hành. Thời điểm ngừng và thời gian lưu dữ liệu sau hết hạn chưa được công bố, cần xác nhận trước khi mua."] },
+      { id: "thanh-toan", title: "Thanh toán", paragraphs: [`Phương thức thanh toán hiện công bố: ${paymentMethods}. Chỉ chuyển khoản theo thông tin được quản trị viên xác nhận cho đơn hàng hiện tại. Không gửi mật khẩu ngân hàng, OTP, PIN hoặc thông tin nhạy cảm khác.`] },
+      { id: "noi-dung-bi-cam", title: "Nội dung và hành vi bị cấm", items: ["DDoS, flood, spam, phishing, malware, botnet hoặc scan port trái phép.", "Xâm nhập trái phép, phát tán nội dung vi phạm pháp luật hoặc dùng VPS để che giấu hành vi vi phạm.", "Dùng phần mềm crack, công cụ khai thác trái phép hoặc proxy công cộng gây rủi ro cho hạ tầng.", "Cố tình sử dụng CPU, ổ đĩa hoặc mạng vượt fair use kéo dài gây ảnh hưởng node hoặc người dùng khác."] },
+      { id: "du-lieu-va-bao-mat", title: "Dữ liệu và thông tin truy cập", paragraphs: ["Khách hàng tự sao lưu dữ liệu quan trọng và tự bảo vệ mật khẩu, khóa SSH, token cùng thông tin truy cập. Việc cài lại VPS, hết hạn dịch vụ hoặc khóa do vi phạm có thể làm mất dữ liệu. Bruhhh Cloud không mặc định cam kết backup nếu gói không ghi rõ."] },
+      { id: "bao-tri-va-ho-tro", title: "Bảo trì và hỗ trợ", paragraphs: ["Khi điều kiện cho phép, Bruhhh Cloud sẽ thông báo trước về bảo trì có ảnh hưởng dịch vụ. Hỗ trợ kỹ thuật tập trung vào lỗi hạ tầng và VPS; lỗi ứng dụng, code hoặc phần mềm bên thứ ba được kiểm tra trong phạm vi có thể nhưng không phải cam kết khắc phục.", `Giờ hỗ trợ: ${businessConfig.supportHours}. Kênh tiếp nhận yêu cầu: ${businessConfig.supportChannel}.`] },
+      { id: "thay-doi-gia-va-cau-hinh", title: "Thay đổi giá hoặc cấu hình", paragraphs: ["Nếu cần thay đổi giá hoặc cấu hình của gói đang cung cấp, Bruhhh Cloud sẽ cố gắng thông báo trước khi điều kiện cho phép. Khách có quyền xem thông tin cập nhật trước khi tiếp tục gia hạn hoặc thanh toán mới."] },
+      { id: "xu-ly-vi-pham", title: "Tạm ngưng, chấm dứt và xử lý vi phạm", paragraphs: ["Bruhhh Cloud có thể giới hạn, tạm khóa hoặc chấm dứt VPS khi phát hiện hành vi nguy hiểm hoặc vi phạm điều khoản. Trường hợp ảnh hưởng nghiêm trọng đến hạ tầng có thể được xử lý ngay; các trường hợp khác sẽ được thông báo khi có thể."] },
+      { id: "gioi-han-trach-nhiem", title: "Giới hạn trách nhiệm", paragraphs: ["Bruhhh Cloud không chịu trách nhiệm cho thiệt hại gián tiếp, mất lợi nhuận, mất dữ liệu do thao tác của khách, lỗi ứng dụng bên thứ ba hoặc sự kiện ngoài phạm vi kiểm soát hợp lý. Quy định này không thay thế trách nhiệm kiểm tra và xử lý lỗi hạ tầng theo chính sách đã công bố."] },
+      { id: "cap-nhat-dieu-khoan", title: "Cập nhật điều khoản", paragraphs: ["Điều khoản có thể được cập nhật để phản ánh thay đổi dịch vụ hoặc quy định vận hành. Ngày cập nhật gần nhất luôn hiển thị ở đầu trang."] },
     ],
   },
   "bao-hanh-hoan-tien": {
     slug: "bao-hanh-hoan-tien",
     title: "Chính sách bảo hành và hoàn tiền",
-    description: "Phạm vi hỗ trợ, điều kiện bảo hành và nguyên tắc xem xét hoàn tiền VPS.",
+    description: "Phạm vi xử lý lỗi VPS, trách nhiệm dữ liệu và điều kiện xem xét hoàn tiền.",
     sections: [
-      { id: "pham-vi-bao-hanh", title: "Phạm vi bảo hành", paragraphs: ["Khi VPS lỗi do hệ thống nhà cung cấp, Bruhhh Cloud sẽ hỗ trợ kiểm tra và áp dụng phương án phù hợp theo tình trạng: sửa lỗi, đổi VPS hoặc cộng thêm thời gian sử dụng.", `Thời gian phản hồi dự kiến: ${configuredValue(businessConfig.warrantyResponseTime)}. Thời gian xử lý tối đa dự kiến: ${configuredValue(businessConfig.maxResolutionTime)}.`] },
-      { id: "loi-ha-tang", title: "Mất kết nối do hạ tầng", paragraphs: ["Khi mất kết nối được xác định có nguyên nhân từ hạ tầng, Bruhhh Cloud sẽ kiểm tra và khắc phục sớm nhất có thể trong phạm vi kiểm soát của hệ thống."] },
-      { id: "truong-hop-khong-bao-hanh", title: "Trường hợp không thuộc bảo hành", items: ["Khách hàng tự xóa dữ liệu hoặc tự cài lại hệ điều hành.", "Cài đặt sai hệ điều hành hoặc thay đổi cấu hình gây lỗi.", "Làm lộ mật khẩu, thông tin truy cập hoặc để bên thứ ba chiếm quyền sử dụng.", "Sử dụng dịch vụ trái với Điều khoản dịch vụ hoặc Quy định sử dụng tài nguyên."] },
-      { id: "dieu-kien-hoan-tien", title: "Điều kiện hoàn tiền", paragraphs: [`Không hoàn tiền vô điều kiện. Khoảng thời gian tiếp nhận yêu cầu cấu hình: ${refundWindow}. Chỉ xem xét hoàn tiền nếu lỗi thuộc phía nhà cung cấp và không thể khắc phục trong thời gian hợp lý. Khách đã sử dụng VPS bình thường nhưng đổi ý sẽ không được hoàn tiền.`] },
-      { id: "phi-va-ho-so", title: "Phí và hồ sơ yêu cầu", paragraphs: ["Phí thanh toán hoặc phí trung gian có thể không được hoàn. Mọi yêu cầu phải có mã đơn hàng và bằng chứng lỗi đủ để kiểm tra."] },
+      { id: "pham-vi-bao-hanh", title: "Phạm vi bảo hành", items: ["VPS không truy cập được do lỗi node hoặc lỗi hạ tầng.", "VPS được cấp sai cấu hình so với đơn hàng đã xác nhận.", "Ổ đĩa, mạng hoặc hệ thống ảo hóa gặp sự cố thuộc phía nhà cung cấp.", "VPS bị gián đoạn ngoài kế hoạch do lỗi kỹ thuật của nhà cung cấp."] },
+      { id: "hinh-thuc-xu-ly", title: "Hình thức xử lý", paragraphs: ["Tùy lỗi thực tế, Bruhhh Cloud có thể khắc phục trên VPS hiện tại, khởi tạo lại VPS khi cần thiết, chuyển node, đổi VPS tương đương hoặc cộng bù thời gian sử dụng. Hoàn tiền chỉ là một phương án khi lỗi nghiêm trọng thuộc phía nhà cung cấp và không thể khắc phục; không cam kết mọi sự cố đều được hoàn tiền."] },
+      { id: "khong-thuoc-bao-hanh", title: "Trường hợp không được bảo hành", items: ["Khách tự xóa file, làm mất dữ liệu, cài sai hệ điều hành hoặc cấu hình sai.", "Lộ mật khẩu, khóa SSH hoặc thông tin đăng nhập.", "VPS bị tấn công do ứng dụng của khách có lỗ hổng.", "Dùng phần mềm crack, malware, botnet hoặc công cụ vi phạm.", "DDoS, spam, scan port trái phép hoặc khai thác tài nguyên.", "Dùng CPU, ổ đĩa hoặc mạng vượt fair use kéo dài.", "VPS hết hạn nhưng khách chưa gia hạn.", "Lỗi từ phần mềm bên thứ ba ngoài quyền kiểm soát của nhà cung cấp."] },
+      { id: "chinh-sach-du-lieu", title: "Chính sách dữ liệu", paragraphs: [`Khách hàng chịu trách nhiệm sao lưu dữ liệu quan trọng. Bruhhh Cloud không mặc định cam kết có backup nếu gói không ghi rõ. Việc cài lại VPS có thể xóa toàn bộ dữ liệu; nhà cung cấp không chịu trách nhiệm với dữ liệu mất do thao tác của khách. Chính sách backup hiện tại: ${businessConfig.infrastructure.backupPolicy}. Nếu có backup, chu kỳ, thời gian lưu và khả năng khôi phục phải được công bố riêng.`] },
+      { id: "dieu-kien-hoan-tien", title: "Điều kiện hoàn tiền", items: [`Yêu cầu phải gửi trong thời hạn: ${refundWindow}.`, "Khách cần cung cấp mã đơn hàng và mô tả lỗi để kiểm tra.", "Bruhhh Cloud có quyền kiểm tra VPS trước khi quyết định.", "Chỉ hoàn khi lỗi thuộc nhà cung cấp và không thể khắc phục trong thời gian hợp lý.", "Không hoàn tiền vì đổi ý, không còn nhu cầu hoặc chọn sai gói.", "Không hoàn tiền cho tài khoản vi phạm điều khoản.", "Phí trung gian thanh toán có thể không được hoàn.", "Khoản hoàn chỉ được trả về đúng người hoặc phương thức đã thanh toán khi có thể xác minh."] },
+      { id: "thoi-gian-xu-ly", title: "Thời gian xử lý", paragraphs: [`Phản hồi ban đầu: ${configuredValue(businessConfig.warrantyResponseTime)}. Kiểm tra kỹ thuật: ${configuredValue(businessConfig.technicalInspectionTime)}. Thời gian xử lý lỗi tối đa dự kiến: ${configuredValue(businessConfig.maxResolutionTime)}. Thời gian xử lý hoàn tiền: ${configuredValue(businessConfig.refundProcessingTime)}. Kênh gửi yêu cầu: ${businessConfig.supportChannel}.`] },
     ],
   },
   "quyen-rieng-tu": {
@@ -43,7 +46,7 @@ export const policies: Record<PolicySlug, PolicyData> = {
       { id: "muc-dich-su-dung", title: "Mục đích sử dụng", paragraphs: ["Thông tin được sử dụng để xử lý đơn hàng, hỗ trợ kỹ thuật, chống gian lận và gửi thông báo liên quan đến dịch vụ."] },
       { id: "chia-se-thong-tin", title: "Chia sẻ thông tin", paragraphs: ["Bruhhh Cloud không bán dữ liệu khách hàng. Thông tin không được công khai trừ khi có yêu cầu pháp lý hợp lệ hoặc khách hàng chủ động yêu cầu chia sẻ để xử lý dịch vụ."] },
       { id: "thoi-gian-luu-tru", title: "Thời gian lưu trữ", paragraphs: ["Chỉ lưu dữ liệu trong thời gian cần thiết cho mục đích xử lý đơn hàng, hỗ trợ, đối soát hoặc đáp ứng nghĩa vụ pháp lý phù hợp."] },
-      { id: "yeu-cau-cua-khach-hang", title: "Yêu cầu sửa hoặc xóa thông tin", paragraphs: [`Khách hàng có thể gửi yêu cầu sửa hoặc xóa thông tin cá nhân qua email ${siteConfigContactEmail}. Yêu cầu cần nêu rõ thông tin cần xử lý để Bruhhh Cloud xác minh và phản hồi.`] },
+      { id: "yeu-cau-cua-khach-hang", title: "Yêu cầu sửa hoặc xóa thông tin", paragraphs: [`Khách hàng có thể gửi yêu cầu sửa hoặc xóa thông tin cá nhân qua email ${siteConfig.contact.email}. Yêu cầu cần nêu rõ thông tin cần xử lý để Bruhhh Cloud xác minh và phản hồi.`] },
       { id: "bao-mat-thong-tin", title: "Bảo mật thông tin", paragraphs: ["Bruhhh Cloud áp dụng các biện pháp phù hợp trong phạm vi hệ thống hiện có để hạn chế truy cập trái phép. Không đưa ra tuyên bố về mã hóa hoặc tiêu chuẩn bảo mật nếu hệ thống chưa xác nhận được."] },
     ],
   },
@@ -64,15 +67,16 @@ export const policies: Record<PolicySlug, PolicyData> = {
   "su-dung-tai-nguyen": {
     slug: "su-dung-tai-nguyen",
     title: "Quy định sử dụng tài nguyên",
-    description: "Thông tin công khai và nguyên tắc fair use khi sử dụng tài nguyên VPS.",
+    description: "Cách hiểu đúng về vCPU, RAM, NVMe, cổng mạng và fair use của VPS.",
     sections: [
-      { id: "cpu-va-vcpu", title: "CPU và vCPU", paragraphs: [`CPU model: ${businessConfig.infrastructure.cpuModel}. Loại vCPU: ${businessConfig.infrastructure.vcpuType}. Khi cấu hình chưa được công bố là shared hay dedicated, khách hàng không nên hiểu đó là tài nguyên dedicated.`] },
-      { id: "gioi-han-cpu", title: "Sử dụng CPU liên tục", paragraphs: ["CPU có thể bị giới hạn khi sử dụng 100% liên tục trong thời gian dài và gây ảnh hưởng đến hệ thống hoặc người dùng khác. Việc giới hạn được xem xét theo tình trạng thực tế và chính sách fair use."] },
-      { id: "ram-va-luu-tru", title: "RAM và lưu trữ", paragraphs: [`Dung lượng RAM theo từng gói được hiển thị tại Bảng giá. Ổ đĩa hiện công bố: 120 GB NVMe. Chính sách fair use: ${businessConfig.infrastructure.fairUsePolicy}.`] },
-      { id: "cong-mang-va-traffic", title: "Cổng mạng và traffic", paragraphs: [`Cổng mạng: ${businessConfig.infrastructure.portSpeed}. Đây là tốc độ cổng mạng tối đa, không phải cam kết băng thông thực tế cho mọi thời điểm. Giới hạn traffic hàng tháng: ${businessConfig.infrastructure.monthlyTraffic}.`] },
-      { id: "quy-dinh-su-dung", title: "Quy định fair use", items: ["Không chạy benchmark hoặc stress test kéo dài nếu gây ảnh hưởng hệ thống.", "Không tạo lưu lượng bất thường, scan trái phép, spam hoặc hành vi làm ảnh hưởng người dùng khác.", "Không sử dụng tài nguyên để thực hiện hành vi bị cấm trong Điều khoản dịch vụ."] },
-      { id: "thong-tin-chua-cong-bo", title: "Thông tin chưa công bố", paragraphs: [`Datacenter: ${businessConfig.infrastructure.datacenter}. Chống DDoS: ${businessConfig.infrastructure.ddosProtection}. Hệ điều hành hỗ trợ: ${businessConfig.infrastructure.supportedOperatingSystems}. Các thông tin này sẽ chỉ được cập nhật khi có dữ liệu xác nhận.`] },
-      { id: "minecraft", title: "Server Minecraft", paragraphs: ["Bruhhh Cloud không cam kết số lượng người chơi Minecraft khi chưa có kết quả benchmark phù hợp với phiên bản, mod, plugin và cách cấu hình thực tế."] },
+      { id: "cpu-va-vcpu", title: "CPU và vCPU", paragraphs: [`CPU model: ${businessConfig.infrastructure.cpuModel}. Loại vCPU: ${businessConfig.infrastructure.vcpuType}. Số vCPU không đồng nghĩa với số lõi vật lý độc quyền. Khi config chưa xác nhận shared hay dedicated, khách không nên hiểu đó là tài nguyên dedicated.`] },
+      { id: "gioi-han-cpu", title: "Tác vụ CPU kéo dài", paragraphs: ["Không được stress CPU 100% liên tục gây ảnh hưởng node. Tác vụ nặng kéo dài có thể bị giới hạn hoặc yêu cầu nâng gói. Bruhhh Cloud sẽ liên hệ trước khi giới hạn nếu điều kiện cho phép, trừ trường hợp gây ảnh hưởng nghiêm trọng đến hệ thống."] },
+      { id: "ram", title: "RAM", paragraphs: ["RAM được cấp theo gói, nhưng hệ điều hành và dịch vụ nền cũng sử dụng một phần tài nguyên. Không cam kết ứng dụng luôn dùng đủ toàn bộ RAM nếu hệ thống có cơ chế quản lý riêng. Không tạo tiến trình bất thường để chiếm dụng hoặc phá hệ thống."] },
+      { id: "o-dia", title: "Ổ đĩa", paragraphs: ["Ổ đĩa hiện công bố là NVMe. Dung lượng thực tế có thể thấp hơn nhẹ sau khi định dạng và cài hệ điều hành. Cấm ghi/xóa liên tục cường độ cao gây ảnh hưởng ổ đĩa chung; database hoặc workload ghi lớn cần trao đổi trước."] },
+      { id: "mang", title: "Mạng", paragraphs: [`Cổng mạng: ${businessConfig.infrastructure.portSpeed}. Đây là tốc độ cổng mạng tối đa, không phải cam kết khách luôn đạt đủ 1 Gbps. Tốc độ thực tế phụ thuộc node, tuyến mạng, vị trí và tải hệ thống. Traffic hàng tháng: ${businessConfig.infrastructure.monthlyTraffic}.`] },
+      { id: "hanh-vi-mang-bi-cam", title: "Hành vi mạng bị cấm", items: ["DDoS, flood, proxy công cộng, spam và hành vi lạm dụng mạng.", "Scan port trái phép hoặc tạo lưu lượng bất thường ảnh hưởng người dùng khác.", "Chạy benchmark hoặc stress test kéo dài gây ảnh hưởng hệ thống."] },
+      { id: "minecraft", title: "Server Minecraft", paragraphs: [`Hiệu năng phụ thuộc phiên bản, plugin, mod, map và số người chơi. Bruhhh Cloud không cam kết số player chỉ dựa trên RAM. Paper, Purpur và cấu hình tối ưu thường phù hợp hơn cho workload vừa phải. ${businessConfig.infrastructure.cpuModel} phù hợp workload vừa phải, không được quảng cáo như CPU gaming xung cao. Kết quả thực tế cần benchmark trên đúng node.`] },
+      { id: "thong-tin-chua-cong-bo", title: "Thông tin cần xác nhận", paragraphs: [`Datacenter: ${businessConfig.infrastructure.datacenter}. Chống DDoS: ${businessConfig.infrastructure.ddosProtection}. Hệ điều hành hỗ trợ: ${businessConfig.infrastructure.supportedOperatingSystems}. Chính sách fair use: ${businessConfig.infrastructure.fairUsePolicy}. Các dữ liệu này cần được xác nhận trước khi mua nếu ảnh hưởng nhu cầu sử dụng.`] },
     ],
   },
 };

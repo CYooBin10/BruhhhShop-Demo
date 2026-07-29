@@ -22,7 +22,6 @@ export const siteConfig = {
 export const navigation = [
   { label: "Trang chủ", href: "#trang-chu" },
   { label: "Bảng giá", href: "#bang-gia" },
-  { label: "Ưu điểm", href: "#uu-diem" },
-  { label: "Cam kết", href: "#cam-ket" },
-  { label: "Câu hỏi thường gặp", href: "#faq" },
+  { label: "Chính sách", href: "#chinh-sach" },
+  { label: "Liên hệ", href: "#lien-he" },
 ] as const;

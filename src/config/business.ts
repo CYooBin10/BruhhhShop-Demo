@@ -2,8 +2,11 @@ export const unknownValue = "Chưa công bố";
 
 export const businessConfig = {
   supportHours: unknownValue,
+  supportChannel: unknownValue,
   warrantyResponseTime: unknownValue,
+  technicalInspectionTime: unknownValue,
   maxResolutionTime: unknownValue,
+  refundProcessingTime: unknownValue,
   refundWindowHours: null as number | null,
   deliveryTime: unknownValue,
   paymentMethods: [] as string[],

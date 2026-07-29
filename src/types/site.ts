@@ -12,11 +12,6 @@ export type PolicyData = {
   sections: PolicySectionData[];
 };
 
-export type ServiceDetail = {
-  label: string;
-  value: string;
-};
-
 export type Plan = {
   id: string;
   name: string;
@@ -27,11 +22,5 @@ export type Plan = {
   price: string;
   period: string;
   status: string;
-  serviceDetails: ServiceDetail[];
   popular?: boolean;
-};
-
-export type Faq = {
-  question: string;
-  answer: string;
 };

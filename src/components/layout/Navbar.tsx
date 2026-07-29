@@ -5,11 +5,7 @@ import { navigation } from "@/config/site";
 import { Icon } from "@/components/ui/Icon";
 import { Logo } from "@/components/layout/Footer";
 
-type NavbarProps = {
-  onOrder: () => void;
-};
-
-export function Navbar({ onOrder }: NavbarProps) {
+export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#trang-chu");
@@ -51,9 +47,9 @@ export function Navbar({ onOrder }: NavbarProps) {
           ))}
         </nav>
         <div className="nav-actions">
-          <button className="button button-small button-primary" type="button" onClick={onOrder}>
-            Mua VPS <Icon name="arrow-up-right" />
-          </button>
+          <a className="button button-small button-primary" href="#bang-gia">
+            Xem bảng giá <Icon name="arrow-right" />
+          </a>
           <button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Đóng menu" : "Mở menu"} onClick={() => setMenuOpen((open) => !open)}>
             <Icon name={menuOpen ? "close" : "menu"} />
           </button>
@@ -65,9 +61,9 @@ export function Navbar({ onOrder }: NavbarProps) {
             {item.label}
           </a>
         ))}
-        <button className="button button-primary" type="button" onClick={() => { closeMenu(); onOrder(); }}>
-          Mua VPS <Icon name="arrow-up-right" />
-        </button>
+        <a className="button button-primary" href="#bang-gia" onClick={closeMenu}>
+          Xem bảng giá <Icon name="arrow-right" />
+        </a>
       </div>
     </header>
   );
