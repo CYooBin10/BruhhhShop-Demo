@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/layout/Footer";
 import { navigation, siteConfig } from "@/config/site";
-import { supabase } from "@/lib/supabase";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -46,25 +45,38 @@ export function Navbar({ onAuth }: NavbarProps) {
   }, []);
 
   useEffect(() => {
-    if (!supabase) return;
     let active = true;
-    void supabase.auth.getUser().then(({ data }) => {
-      if (active) setUser(data.user);
-    });
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
+    let subscription: { unsubscribe: () => void } | undefined;
+    const loadAuth = () => {
+      void import("@/lib/supabase").then(({ supabase }) => {
+        if (!active || !supabase) return;
+        void supabase.auth.getUser().then(({ data }) => {
+          if (active) setUser(data.user);
+        });
+        subscription?.unsubscribe();
+        subscription = supabase.auth.onAuthStateChange((_event, session) => {
+          setUser(session?.user ?? null);
+        }).data.subscription;
+      });
+    };
+    const hasStoredSession = Object.keys(window.localStorage).some((key) => key.startsWith("sb-") && key.endsWith("-auth-token"));
+    if (hasStoredSession) loadAuth();
+    window.addEventListener("bruhhh-auth-changed", loadAuth);
     return () => {
       active = false;
-      subscription.unsubscribe();
+      window.removeEventListener("bruhhh-auth-changed", loadAuth);
+      subscription?.unsubscribe();
     };
   }, []);
 
   useEffect(() => {
-    if (!supabase || !user) return;
+    if (!user) return;
     let active = true;
-    void supabase.from("profiles").select("username").eq("id", user.id).maybeSingle().then(({ data }) => {
-      if (active) setProfile({ userId: user.id, username: data?.username ?? user.user_metadata.username ?? "Tài khoản" });
+    void import("@/lib/supabase").then(({ supabase }) => {
+      if (!active || !supabase) return;
+      void supabase.from("profiles").select("username").eq("id", user.id).maybeSingle().then(({ data }) => {
+        if (active) setProfile({ userId: user.id, username: data?.username ?? user.user_metadata.username ?? "Tài khoản" });
+      });
     });
     return () => {
       active = false;
@@ -75,6 +87,7 @@ export function Navbar({ onAuth }: NavbarProps) {
   const getNavigationHref = (href: string) => pathname === "/" || !href.startsWith("#") ? href : `/${href}`;
   const isNavigationActive = (href: string) => href.startsWith("#") ? pathname === "/" && activeSection === href : pathname.startsWith(href);
   const signOut = async () => {
+    const { supabase } = await import("@/lib/supabase");
     if (!supabase) return;
     const { error } = await supabase.auth.signOut();
     if (!error) setUser(null);

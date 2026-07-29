@@ -4,6 +4,7 @@ import "./globals.css";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: siteConfig.title,
   description: siteConfig.description,
   openGraph: { title: siteConfig.title, description: siteConfig.description, type: "website", locale: "vi_VN", siteName: siteConfig.name },

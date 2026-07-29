@@ -72,6 +72,9 @@ export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
       setMessage(authErrors[result.error.message] ?? result.error.message);
       return;
     }
+    if (result.data.session) {
+      window.dispatchEvent(new Event("bruhhh-auth-changed"));
+    }
     if (mode === "login") {
       onClose();
       return;
