@@ -67,4 +67,15 @@ export const plans: Plan[] = [
     period: "tháng",
     status: "Còn hàng",
   },
+  {
+    id: "bruh-vps-16-32",
+    name: "Bruh VPS 16-32",
+    cpu: "16 vCPU",
+    ram: "32 GB",
+    portSpeed: "Tối đa 1 Gbps",
+    storage: "120 GB NVMe",
+    price: "399.000đ",
+    period: "tháng",
+    status: "Hết hàng",
+  },
 ];

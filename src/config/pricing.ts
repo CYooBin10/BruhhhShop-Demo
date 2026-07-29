@@ -11,6 +11,7 @@ export const pricingConfig = {
     "bruh-vps-2-8": { originalPrice: 239000, salePrice: 189000 },
     "bruh-vps-4-8": { originalPrice: 289000, salePrice: 239000 },
     "bruh-vps-8-16": { originalPrice: 349000, salePrice: 299000 },
+    "bruh-vps-16-32": { originalPrice: 449000, salePrice: 399000 },
   },
 } satisfies { promotions: Record<string, Promotion> };
 
