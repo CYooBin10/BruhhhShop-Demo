@@ -3,6 +3,7 @@ import type { SVGProps } from "react";
 type IconName =
   | "arrow-up-right"
   | "arrow-right"
+  | "bell"
   | "check"
   | "chevron-down"
   | "cloud"
@@ -37,6 +38,7 @@ type IconProps = SVGProps<SVGSVGElement> & {
 const paths: Record<IconName, React.ReactNode> = {
   "arrow-up-right": <><path d="M7 17 17 7" /><path d="M7 7h10v10" /></>,
   "arrow-right": <><path d="M5 12h14" /><path d="m13 6 6 6-6 6" /></>,
+  bell: <><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" /><path d="M10 21h4" /></>,
   check: <path d="m5 12 4 4L19 6" />,
   "chevron-down": <path d="m6 9 6 6 6-6" />,
   cloud: <><path d="M17.5 19H7a5 5 0 0 1-.8-9.9A7 7 0 0 1 19.7 11 4 4 0 0 1 17.5 19Z" /><path d="M9 15h6M10 12h4" /></>,

@@ -4,6 +4,9 @@ export const siteConfig = {
   title: "Bruhhh Cloud – Bruh VPS giá rẻ",
   description:
     "Bruhhh Cloud cung cấp các gói Bruh VPS giá hợp lý, cấu hình rõ ràng, sản phẩm chất lượng và có bảo hành.",
+  notifications: [
+    { id: "welcome", title: "Thông báo", message: "Theo dõi Bruhhh Cloud để nhận cập nhật VPS và chương trình mới." },
+  ],
   contact: {
     facebookUrl: "https://www.facebook.com/huyy.bao.375595",
     discordUrl: "https://discord.gg/jhsJHVVqB",

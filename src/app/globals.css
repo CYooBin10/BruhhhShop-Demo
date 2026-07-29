@@ -42,7 +42,7 @@ svg { display: block; }
 .logo strong { color: var(--blue-bright); font-weight: 700; }
 .logo-image { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; }
 .desktop-nav { display: flex; align-items: center; gap: 28px; margin-left: auto; }
-.desktop-nav a, .mobile-nav a { position: relative; color: var(--text-muted); font-size: 13px; transition: color .2s ease; }
+.desktop-nav a, .mobile-nav a { position: relative; color: var(--text-muted); font-size: 13px; transition: color .2s ease; }.nav-item-with-notice { display: inline-flex; align-items: center; gap: 10px; }.notice-control { position: relative; }.notice-trigger { position: relative; display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; background: transparent; color: var(--text-soft); }.notice-trigger:hover { border-color: var(--blue-bright); color: var(--blue-bright); }.notice-trigger svg { width: 14px; height: 14px; }.notice-trigger i { position: absolute; top: 3px; right: 3px; width: 5px; height: 5px; border-radius: 50%; background: var(--blue-bright); }.notice-panel { position: absolute; z-index: 60; top: calc(100% + 12px); right: 0; width: 260px; padding: 14px; border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface-strong); box-shadow: 0 12px 30px rgba(0, 0, 0, .28); }.notice-panel > strong { display: block; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--text); font-size: 12px; }.notice-item { padding-top: 11px; }.notice-item b { color: var(--text-soft); font-size: 11px; }.notice-item p, .notice-empty { margin: 5px 0 0; color: var(--text-muted); font-size: 11px; line-height: 1.5; }
 .desktop-nav a::after { position: absolute; right: 0; bottom: -10px; left: 0; height: 1px; background: var(--blue-bright); content: ''; opacity: 0; transform: scaleX(.4); transition: opacity .2s ease, transform .2s ease; }
 .desktop-nav a:hover, .desktop-nav a.is-active, .mobile-nav a:hover, .mobile-nav a.is-active { color: var(--text); }
 .desktop-nav a.is-active::after { opacity: 1; transform: scaleX(1); }
@@ -102,7 +102,7 @@ svg { display: block; }
 .plan-features li.feature-muted strong { color: var(--text-muted); }
 .plan-button { width: 100%; margin-top: 30px; }
 .pricing-note { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 28px 0 0; color: var(--text-muted); font-family: var(--font-mono); font-size: 10px; }
-.pricing-note svg { width: 15px; height: 15px; color: var(--blue-bright); }.pricing-note span { color: var(--text-soft); }
+.pricing-note svg { width: 15px; height: 15px; color: var(--blue-bright); }.pricing-note span { color: var(--text-soft); }.pricing-addon-note { margin: 12px 0 0; color: var(--text-soft); font-family: var(--font-mono); font-size: 11px; text-align: center; }
 
 .section-use-cases { padding-top: 116px; background: #0b1019; }
 .center-heading { display: block; text-align: center; }.center-heading .section-label { justify-content: center; }.center-heading > p:last-child { max-width: 430px; margin: 18px auto 0; }

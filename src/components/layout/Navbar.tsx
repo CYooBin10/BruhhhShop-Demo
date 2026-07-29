@@ -4,7 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/layout/Footer";
-import { navigation } from "@/config/site";
+import { navigation, siteConfig } from "@/config/site";
 import { supabase } from "@/lib/supabase";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -86,7 +86,7 @@ export function Navbar({ onAuth }: NavbarProps) {
         <Logo />
         <nav className={`desktop-nav ${menuOpen ? "is-open" : ""}`} aria-label="Điều hướng chính">
           {navigation.map((item) => (
-            <a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</a>
+            <span className="nav-item-with-notice" key={item.href}><a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} onClick={closeMenu}>{item.label}</a>{item.label === "Liên hệ" ? <NotificationBell /> : null}</span>
           ))}
         </nav>
         <div className="nav-actions">
@@ -101,6 +101,29 @@ export function Navbar({ onAuth }: NavbarProps) {
       </div>
     </header>
   );
+}
+
+function NotificationBell() {
+  const [open, setOpen] = useState(false);
+  const noticeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOutside = (event: MouseEvent) => {
+      if (!noticeRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeWithEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", closeOutside);
+    document.addEventListener("keydown", closeWithEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOutside);
+      document.removeEventListener("keydown", closeWithEscape);
+    };
+  }, [open]);
+
+  return <div ref={noticeRef} className="notice-control"><button className="notice-trigger" type="button" aria-expanded={open} aria-label="Mở thông báo" onClick={() => setOpen((current) => !current)}><Icon name="bell" />{siteConfig.notifications.length > 0 ? <i /> : null}</button>{open ? <div className="notice-panel"><strong>Thông báo</strong>{siteConfig.notifications.length > 0 ? siteConfig.notifications.map((notice) => <div className="notice-item" key={notice.id}><b>{notice.title}</b><p>{notice.message}</p></div>) : <p className="notice-empty">Chưa có thông báo mới.</p>}</div> : null}</div>;
 }
 
 type UserAccountProps = {
