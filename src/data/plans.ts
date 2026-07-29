@@ -9,7 +9,7 @@ export const plans: Plan[] = [
     portSpeed: "Tối đa 1 Gbps",
     storage: "120 GB NVMe",
     price: "39.000đ",
-    period: "mỗi tháng",
+    period: "tháng",
     status: "Còn hàng",
   },
   {
@@ -20,7 +20,7 @@ export const plans: Plan[] = [
     portSpeed: "Tối đa 1 Gbps",
     storage: "120 GB NVMe",
     price: "69.000đ",
-    period: "mỗi tháng",
+    period: "tháng",
     status: "Còn hàng",
   },
   {
@@ -31,7 +31,7 @@ export const plans: Plan[] = [
     portSpeed: "Tối đa 1 Gbps",
     storage: "120 GB NVMe",
     price: "129.000đ",
-    period: "mỗi tháng",
+    period: "tháng",
     status: "Còn hàng",
   },
   {
@@ -42,7 +42,7 @@ export const plans: Plan[] = [
     portSpeed: "Tối đa 1 Gbps",
     storage: "120 GB NVMe",
     price: "189.000đ",
-    period: "mỗi tháng",
+    period: "tháng",
     status: "Còn hàng",
   },
   {
@@ -53,7 +53,7 @@ export const plans: Plan[] = [
     portSpeed: "Tối đa 1 Gbps",
     storage: "120 GB NVMe",
     price: "239.000đ",
-    period: "mỗi tháng",
+    period: "tháng",
     status: "Còn hàng",
   },
   {
@@ -64,7 +64,7 @@ export const plans: Plan[] = [
     portSpeed: "Tối đa 1 Gbps",
     storage: "120 GB NVMe",
     price: "299.000đ",
-    period: "mỗi tháng",
+    period: "tháng",
     status: "Còn hàng",
   },
 ];
