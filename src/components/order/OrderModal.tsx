@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
+import { formatVnd, getPlanPromotion } from "@/config/pricing";
 import { policyUrls } from "@/config/policies";
 import { siteConfig } from "@/config/site";
 import { Icon } from "@/components/ui/Icon";
@@ -29,11 +30,16 @@ export function OrderModal({ plan, onClose }: OrderModalProps) {
 
   if (!plan) return null;
 
+  const promotion = getPlanPromotion(plan.id);
+  const originalPrice = promotion?.originalPrice ?? 0;
+  const salePrice = promotion?.salePrice ?? 0;
+  const price = originalPrice > salePrice && salePrice > 0 ? formatVnd(salePrice) : plan.price;
+
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <section aria-labelledby={titleId} aria-modal="true" className="order-modal contact-modal" role="dialog">
         <div className="modal-header"><div><p className="section-label">Đặt hàng qua kênh hỗ trợ</p><h2>Mua <span>{plan.name}</span></h2></div><button ref={closeButtonRef} className="modal-close" type="button" aria-label="Đóng cửa sổ liên hệ" onClick={onClose}><Icon name="close" /></button></div>
-        <div className="selected-plan"><Icon name="server" /><div><span>Gói đã chọn</span><strong>{plan.name} · {plan.price}/{plan.period}</strong></div></div>
+        <div className="selected-plan"><Icon name="server" /><div><span>Gói đã chọn</span><strong>{plan.name} · {price}/{plan.period}</strong></div></div>
         <p className="contact-modal-copy">Website hiện chưa hỗ trợ mua trực tiếp. Vui lòng nhắn tin qua Discord hoặc Facebook để được xác nhận đơn hàng và hướng dẫn thanh toán.</p>
         <label className="order-agreement"><input checked={agreed} type="checkbox" onChange={(event) => setAgreed(event.target.checked)} /><span>Tôi đã đọc và đồng ý với <Link href={policyUrls.terms} target="_blank">Điều khoản dịch vụ</Link>, <Link href={policyUrls.refund} target="_blank">Chính sách bảo hành và hoàn tiền</Link>.</span></label>
         <div className="contact-options">

@@ -90,9 +90,7 @@ svg { display: block; }
 .plan-icon { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid var(--line); border-radius: 10px; background: rgba(255, 255, 255, .03); color: var(--blue-bright); }
 .plan-icon svg { width: 20px; height: 20px; }
 .availability { color: var(--green); font-family: var(--font-mono); font-size: 12px; }
-.plan-eyebrow { margin: 30px 0 6px; color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }
-.pricing-card h3 { margin: 0; font-size: 28px; font-weight: 500; letter-spacing: -.05em; }
-.plan-promotion { display: flex; align-items: center; gap: 8px; margin-top: 22px; }.plan-promotion s { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }.plan-promotion span { padding: 4px 7px; border: 1px solid rgba(99, 230, 168, .28); border-radius: 5px; color: var(--green); font-family: var(--font-mono); font-size: 10px; }.plan-price { display: flex; align-items: baseline; gap: 8px; margin-top: 24px; }.plan-promotion + .plan-price { margin-top: 8px; }
+.plan-label-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 30px 0 6px; }.plan-eyebrow { margin: 0; color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }.discount-badge { padding: 4px 7px; border: 1px solid rgba(99, 230, 168, .3); border-radius: 5px; color: var(--green); font-family: var(--font-mono); font-size: 10px; white-space: nowrap; }.pricing-card h3 { margin: 0; color: var(--blue-bright); font-size: 28px; font-weight: 700; letter-spacing: -.05em; }.plan-price { display: flex; align-items: baseline; margin-top: 24px; }.plan-price.has-promotion { display: grid; gap: 4px; }.plan-price s { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }.plan-sale { display: flex; align-items: baseline; gap: 8px; }
 .plan-price strong { font-size: 40px; font-weight: 500; letter-spacing: -.07em; }
 .plan-price span { color: var(--text-muted); font-family: var(--font-mono); font-size: 12px; }
 .plan-rule { height: 1px; margin: 28px 0 20px; background: var(--line); }
