@@ -11,6 +11,7 @@ import { Cta } from "@/components/sections/Cta";
 import { Faq } from "@/components/sections/Faq";
 import { Hero } from "@/components/sections/Hero";
 import { Process } from "@/components/sections/Process";
+import { Transparency } from "@/components/sections/Transparency";
 import { UseCases } from "@/components/sections/UseCases";
 import { plans } from "@/data/plans";
 import type { Plan } from "@/types/site";
@@ -21,7 +22,7 @@ export function HomePage() {
     <>
       <a className="skip-link" href="#main-content">Chuyển đến nội dung</a>
       <Navbar onOrder={() => setSelectedPlan(plans[1])} />
-      <main id="main-content"><Hero /><Pricing plans={plans} onOrder={setSelectedPlan} /><UseCases /><Advantages /><Commitment /><Process /><Faq /><Cta onOrder={() => setSelectedPlan(plans[1])} /></main>
+      <main id="main-content"><Hero /><Pricing plans={plans} onOrder={setSelectedPlan} /><UseCases /><Advantages /><Commitment /><Transparency /><Process /><Faq /><Cta onOrder={() => setSelectedPlan(plans[1])} /></main>
       <Footer />
       <OrderModal key={selectedPlan?.id ?? "closed"} plan={selectedPlan} onClose={() => setSelectedPlan(null)} />
     </>

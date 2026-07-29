@@ -32,11 +32,15 @@ function PricingCard({ plan, onOrder }: { plan: Plan; onOrder: (plan: Plan) => v
       <ul className="plan-features">
         <li><span><Icon name="cpu" /> CPU</span><strong>{plan.cpu}</strong></li>
         <li><span><Icon name="server" /> RAM</span><strong>{plan.ram}</strong></li>
-        <li><span><Icon name="globe" /> Băng thông</span><strong>{plan.bandwidth}</strong></li>
+        <li><span><Icon name="globe" /> Cổng mạng</span><strong>{plan.portSpeed}</strong></li>
         <li><span><Icon name="server" /> Ổ cứng NVMe tốc độ cao</span><strong>{plan.storage}</strong></li>
         <li><span><Icon name="shield" /> Bảo hành</span><strong>Trong điều khoản</strong></li>
         <li className="feature-muted"><span><Icon name="globe" /> Thông tin khác</span><strong>Liên hệ để biết thêm</strong></li>
       </ul>
+      <details className="service-details">
+        <summary>Thông tin dịch vụ <Icon name="chevron-down" /></summary>
+        <div className="service-details-grid">{plan.serviceDetails.map((detail) => <div key={detail.label}><span>{detail.label}</span><strong>{detail.value}</strong></div>)}</div>
+      </details>
       <button className={`button plan-button ${plan.popular ? "button-primary" : "button-ghost"}`} type="button" onClick={() => onOrder(plan)}>Mua ngay <Icon name="arrow-up-right" /></button>
     </article>
   );

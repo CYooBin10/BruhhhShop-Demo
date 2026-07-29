@@ -11,9 +11,11 @@ export const siteConfig = {
     email: "toimecode@hotmail.com",
   },
   legal: {
-    termsUrl: "",
-    warrantyUrl: "",
-    privacyUrl: "",
+    termsUrl: "/chinh-sach/dieu-khoan-dich-vu",
+    warrantyUrl: "/chinh-sach/bao-hanh-hoan-tien",
+    privacyUrl: "/chinh-sach/quyen-rieng-tu",
+    paymentUrl: "/chinh-sach/thanh-toan-ban-giao",
+    resourceUrl: "/chinh-sach/su-dung-tai-nguyen",
   },
 } as const;
 

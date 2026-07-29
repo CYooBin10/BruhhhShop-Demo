@@ -1,10 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { businessConfig } from "@/config/business";
 import { siteConfig } from "@/config/site";
 
 export function Logo() {
   return (
-    <Link className="logo" href="#trang-chu" aria-label="Bruhhh Cloud - Trang chủ">
+    <Link className="logo" href="/#trang-chu" aria-label="Bruhhh Cloud - Trang chủ">
       <Image alt="Bruhhh Cloud" className="logo-image" height={64} priority src="/assets/image/logo.png" width={64} />
       <span>Bruhhh <strong>Cloud</strong></span>
     </Link>
@@ -14,8 +15,10 @@ export function Logo() {
 export function Footer() {
   const legalLinks = [
     { label: "Điều khoản dịch vụ", href: siteConfig.legal.termsUrl },
-    { label: "Chính sách bảo hành", href: siteConfig.legal.warrantyUrl },
-    { label: "Chính sách quyền riêng tư", href: siteConfig.legal.privacyUrl },
+    { label: "Bảo hành và hoàn tiền", href: siteConfig.legal.warrantyUrl },
+    { label: "Quyền riêng tư", href: siteConfig.legal.privacyUrl },
+    { label: "Thanh toán và bàn giao VPS", href: siteConfig.legal.paymentUrl },
+    { label: "Sử dụng tài nguyên", href: siteConfig.legal.resourceUrl },
   ];
 
   return (
@@ -29,21 +32,22 @@ export function Footer() {
             <a href={siteConfig.contact.facebookUrl} target="_blank" rel="noreferrer">Facebook</a>
             <a href={`tel:${siteConfig.contact.phone}`}>{siteConfig.contact.phone}</a>
             <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
+            <span>Giờ hỗ trợ: {businessConfig.supportHours}</span>
           </div>
         </div>
         <div>
           <h2 className="footer-title">Điều hướng</h2>
           <div className="footer-links">
-            <a href="#bang-gia">Bảng giá</a>
-            <a href="#uu-diem">Ưu điểm</a>
-            <a href="#cam-ket">Cam kết</a>
-            <a href="#faq">FAQ</a>
+            <Link href="/#bang-gia">Bảng giá</Link>
+            <Link href="/#uu-diem">Ưu điểm</Link>
+            <Link href="/#cam-ket">Cam kết</Link>
+            <Link href="/#faq">FAQ</Link>
           </div>
         </div>
         <div>
           <h2 className="footer-title">Thông tin</h2>
           <div className="footer-links">
-            {legalLinks.map((link) => link.href ? <a key={link.label} href={link.href}>{link.label}</a> : <span key={link.label}>{link.label}</span>)}
+            {legalLinks.map((link) => <Link key={link.label} href={link.href}>{link.label}</Link>)}
           </div>
         </div>
       </div>
