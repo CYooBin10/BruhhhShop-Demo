@@ -9,7 +9,7 @@ export const businessConfig = {
   refundProcessingTime: unknownValue,
   refundWindowHours: null as number | null,
   deliveryTime: unknownValue,
-  paymentMethods: [] as string[],
+  paymentMethods: ["Bank(VND)", "Paypal", "Visa"] as string[],
   lastPolicyUpdate: "29/07/2026",
   infrastructure: {
     cpuModel: "AMD EPYC 7571",
@@ -17,7 +17,7 @@ export const businessConfig = {
     portSpeed: "1 Gbps",
     monthlyTraffic: unknownValue,
     datacenter: unknownValue,
-    ddosProtection: unknownValue,
+    ddosProtection: "Anti DDoS 99,99%",
     supportedOperatingSystems: unknownValue,
     backupPolicy: unknownValue,
     fairUsePolicy: unknownValue,

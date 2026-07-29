@@ -12,6 +12,12 @@ export type PolicyData = {
   sections: PolicySectionData[];
 };
 
+export type PlanPromotion = {
+  enabled: boolean;
+  originalPrice: string;
+  label: string;
+};
+
 export type Plan = {
   id: string;
   name: string;

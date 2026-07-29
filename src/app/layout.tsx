@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
-
-const inter = Inter({ subsets: ["latin", "vietnamese"], display: "swap", variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -15,5 +12,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="vi" suppressHydrationWarning><body className={inter.variable}><Script id="theme-preference" strategy="beforeInteractive">{`try { const savedTheme = localStorage.getItem("bruhhh-theme"); const theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.dataset.theme = theme; } catch {}`}</Script>{children}</body></html>;
+  return <html lang="vi" suppressHydrationWarning><body><Script id="theme-preference" strategy="beforeInteractive">{`try { const savedTheme = localStorage.getItem("bruhhh-theme"); const theme = savedTheme === "light" || savedTheme === "dark" ? savedTheme : (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"); document.documentElement.dataset.theme = theme; } catch {}`}</Script>{children}</body></html>;
 }

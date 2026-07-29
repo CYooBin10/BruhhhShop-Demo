@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { businessConfig } from "@/config/business";
 import { policyUrls } from "@/config/policies";
+import { getPlanPromotion } from "@/config/pricing";
 import { Icon } from "@/components/ui/Icon";
 import type { Plan } from "@/types/site";
 
@@ -14,5 +15,8 @@ export function Pricing({ plans, onOrder }: PricingProps) {
 }
 
 function PricingCard({ plan, onOrder }: { plan: Plan; onOrder: (plan: Plan) => void }) {
-  return <article className={`pricing-card ${plan.popular ? "is-popular" : ""}`}>{plan.popular ? <div className="popular-ribbon">Phổ biến <Icon name="spark" /></div> : null}<div className="plan-top"><span className="plan-icon"><Icon name="server" /></span><span className="availability"><i /> {plan.status}</span></div><p className="plan-eyebrow">{plan.name}</p><div className="plan-price"><strong>{plan.price}</strong><span>/{plan.period}</span></div><div className="plan-rule" /><ul className="plan-features"><li><span><Icon name="cpu" /> vCPU</span><strong>{plan.cpu}</strong></li><li><span><Icon name="server" /> RAM</span><strong>{plan.ram}</strong></li><li><span><Icon name="cpu" /> CPU</span><strong>{businessConfig.infrastructure.cpuModel}</strong></li><li><span><Icon name="server" /> Ổ đĩa</span><strong>120 GB</strong></li><li><span><Icon name="globe" /> Cổng mạng</span><strong>{plan.portSpeed}</strong></li></ul><button className={`button plan-button ${plan.popular ? "button-primary" : "button-ghost"}`} type="button" onClick={() => onOrder(plan)}>Đăng ký gói này <Icon name="arrow-up-right" /></button></article>;
+  const promotion = getPlanPromotion(plan.id);
+  const hasPromotion = promotion?.enabled && promotion.originalPrice.trim() !== "";
+
+  return <article className={`pricing-card ${plan.popular ? "is-popular" : ""}`}>{plan.popular ? <div className="popular-ribbon">Phổ biến <Icon name="spark" /></div> : null}<div className="plan-top"><span className="plan-icon"><Icon name="server" /></span><span className="availability"><i /> {plan.status}</span></div><p className="plan-eyebrow">Bruh VPS</p><h3>{plan.name}</h3>{hasPromotion ? <div className="plan-promotion"><s>{promotion.originalPrice}</s><span>{promotion.label}</span></div> : null}<div className="plan-price"><strong>{plan.price}</strong><span>/{plan.period}</span></div><div className="plan-rule" /><ul className="plan-features"><li><span><Icon name="cpu" /> vCPU</span><strong>{plan.cpu}</strong></li><li><span><Icon name="server" /> RAM</span><strong>{plan.ram}</strong></li><li><span><Icon name="cpu" /> CPU</span><strong>{businessConfig.infrastructure.cpuModel}</strong></li><li><span><Icon name="server" /> Ổ đĩa</span><strong>{plan.storage}</strong></li><li><span><Icon name="globe" /> Băng thông</span><strong>{plan.portSpeed}</strong></li></ul><button className={`button plan-button ${plan.popular ? "button-primary" : "button-ghost"}`} type="button" onClick={() => onOrder(plan)}>Đăng ký gói này <Icon name="arrow-up-right" /></button></article>;
 }

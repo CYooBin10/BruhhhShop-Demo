@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import type { User } from "@supabase/supabase-js";
+import { useEffect, useRef, useState } from "react";
+import { Logo } from "@/components/layout/Footer";
 import { navigation } from "@/config/site";
+import { supabase } from "@/lib/supabase";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { Logo } from "@/components/layout/Footer";
 
-export function Navbar() {
+type NavbarProps = {
+  onAuth: (mode: "login" | "register") => void;
+};
+
+export function Navbar({ onAuth }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#trang-chu");
+  const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<{ userId: string; username: string } | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -35,7 +43,38 @@ export function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!supabase) return;
+    let active = true;
+    void supabase.auth.getUser().then(({ data }) => {
+      if (active) setUser(data.user);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!supabase || !user) return;
+    let active = true;
+    void supabase.from("profiles").select("username").eq("id", user.id).maybeSingle().then(({ data }) => {
+      if (active) setProfile({ userId: user.id, username: data?.username ?? user.user_metadata.username ?? "Tài khoản" });
+    });
+    return () => {
+      active = false;
+    };
+  }, [user]);
+
   const closeMenu = () => setMenuOpen(false);
+  const signOut = async () => {
+    if (!supabase) return;
+    const { error } = await supabase.auth.signOut();
+    if (!error) setUser(null);
+  };
 
   return (
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
@@ -43,31 +82,49 @@ export function Navbar() {
         <Logo />
         <nav className={`desktop-nav ${menuOpen ? "is-open" : ""}`} aria-label="Điều hướng chính">
           {navigation.map((item) => (
-            <a className={activeSection === item.href ? "is-active" : ""} href={item.href} key={item.href} onClick={closeMenu}>
-              {item.label}
-            </a>
+            <a className={activeSection === item.href ? "is-active" : ""} href={item.href} key={item.href} onClick={closeMenu}>{item.label}</a>
           ))}
         </nav>
         <div className="nav-actions">
+          {user ? <UserAccount username={profile?.userId === user.id ? profile.username : user.user_metadata.username || "Tài khoản"} email={user.email ?? ""} onSignOut={() => void signOut()} /> : <><button className="auth-link" type="button" onClick={() => onAuth("login")}>Đăng nhập</button><button className="button button-small button-primary auth-register" type="button" onClick={() => onAuth("register")}>Đăng ký</button></>}
           <ThemeToggle />
-          <a className="button button-small button-primary" href="#bang-gia">
-            Xem bảng giá <Icon name="arrow-right" />
-          </a>
-          <button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Đóng menu" : "Mở menu"} onClick={() => setMenuOpen((open) => !open)}>
-            <Icon name={menuOpen ? "close" : "menu"} />
-          </button>
+          <button className="menu-toggle" type="button" aria-expanded={menuOpen} aria-controls="main-navigation" aria-label={menuOpen ? "Đóng menu" : "Mở menu"} onClick={() => setMenuOpen((open) => !open)}><Icon name={menuOpen ? "close" : "menu"} /></button>
         </div>
       </div>
       <div id="main-navigation" className={`mobile-nav ${menuOpen ? "is-open" : ""}`}>
-        {navigation.map((item) => (
-          <a className={activeSection === item.href ? "is-active" : ""} href={item.href} key={item.href} onClick={closeMenu}>
-            {item.label}
-          </a>
-        ))}
-        <a className="button button-primary" href="#bang-gia" onClick={closeMenu}>
-          Xem bảng giá <Icon name="arrow-right" />
-        </a>
+        {navigation.map((item) => <a className={activeSection === item.href ? "is-active" : ""} href={item.href} key={item.href} onClick={closeMenu}>{item.label}</a>)}
+        {user ? <UserAccount username={profile?.userId === user.id ? profile.username : user.user_metadata.username || "Tài khoản"} email={user.email ?? ""} mobile onSignOut={() => { closeMenu(); void signOut(); }} /> : <div className="mobile-auth-actions"><button className="button button-ghost" type="button" onClick={() => { closeMenu(); onAuth("login"); }}>Đăng nhập</button><button className="button button-primary" type="button" onClick={() => { closeMenu(); onAuth("register"); }}>Đăng ký</button></div>}
       </div>
     </header>
   );
+}
+
+type UserAccountProps = {
+  email: string;
+  mobile?: boolean;
+  onSignOut: () => void;
+  username: string;
+};
+
+function UserAccount({ email, mobile = false, onSignOut, username }: UserAccountProps) {
+  const [open, setOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOutside = (event: MouseEvent) => {
+      if (!accountRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const closeWithEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", closeOutside);
+    document.addEventListener("keydown", closeWithEscape);
+    return () => {
+      document.removeEventListener("mousedown", closeOutside);
+      document.removeEventListener("keydown", closeWithEscape);
+    };
+  }, [open]);
+
+  return <div ref={accountRef} className={`account-user ${mobile ? "mobile-account" : ""}`}><button className="account-trigger" type="button" aria-expanded={open} aria-haspopup="menu" onClick={() => setOpen((current) => !current)}><span className="account-avatar"><Icon name="user" /></span><span className="account-copy"><strong>{username}</strong><small>{email}</small></span><Icon name="chevron-down" /></button>{open ? <div className="account-menu" role="menu"><button disabled type="button" role="menuitem">Dashboard</button><button disabled type="button" role="menuitem">Thông tin cá nhân</button><button disabled type="button" role="menuitem">Lịch sử mua</button><button className="account-signout" type="button" role="menuitem" onClick={onSignOut}>Đăng xuất</button></div> : null}</div>;
 }
