@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { navigation } from "@/config/site";
 import { Icon } from "@/components/ui/Icon";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Logo } from "@/components/layout/Footer";
 
 export function Navbar() {
@@ -16,6 +17,7 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
 
     const sections = navigation
+      .filter(({ href }) => href.startsWith("#"))
       .map(({ href }) => document.querySelector(href))
       .filter((section): section is Element => section !== null);
     const observer = new IntersectionObserver(
@@ -47,6 +49,7 @@ export function Navbar() {
           ))}
         </nav>
         <div className="nav-actions">
+          <ThemeToggle />
           <a className="button button-small button-primary" href="#bang-gia">
             Xem bảng giá <Icon name="arrow-right" />
           </a>

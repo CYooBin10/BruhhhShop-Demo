@@ -1,7 +1,7 @@
-export const unknownValue = "Chưa công bố";
+export const unknownValue = "Chưa cập nhật";
 
 export const businessConfig = {
-  supportHours: unknownValue,
+  supportHours: "24/7",
   supportChannel: unknownValue,
   warrantyResponseTime: unknownValue,
   technicalInspectionTime: unknownValue,
@@ -14,7 +14,7 @@ export const businessConfig = {
   infrastructure: {
     cpuModel: "AMD EPYC 7571",
     vcpuType: unknownValue,
-    portSpeed: "Tối đa 1 Gbps",
+    portSpeed: "1 Gbps",
     monthlyTraffic: unknownValue,
     datacenter: unknownValue,
     ddosProtection: unknownValue,

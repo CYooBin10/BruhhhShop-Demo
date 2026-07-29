@@ -10,7 +10,6 @@ const specifications = [
 export function Hero() {
   return (
     <section className="hero section" id="trang-chu">
-      <div className="hero-glow hero-glow-one" />
       <div className="container hero-simple">
         <div className="eyebrow"><span className="eyebrow-dot" /> Bruh VPS</div>
         <h1>VPS hiệu năng ổn định,<br /><em>cấu hình minh bạch</em></h1>

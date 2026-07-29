@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { businessConfig } from "@/config/business";
 import { siteConfig } from "@/config/site";
+import { Icon } from "@/components/ui/Icon";
 
 export function Logo() {
   return (
@@ -26,11 +27,11 @@ export function Footer() {
         <div className="footer-brand">
           <Logo />
           <div className="footer-contact">
-            <a href={siteConfig.contact.discordUrl} target="_blank" rel="noreferrer">Discord hỗ trợ</a>
-            <a href={siteConfig.contact.facebookUrl} target="_blank" rel="noreferrer">Facebook</a>
-            <a href={`tel:${siteConfig.contact.phone}`}>{siteConfig.contact.phone}</a>
-            <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
-            <span>Giờ hỗ trợ: {businessConfig.supportHours}</span>
+            <a href={siteConfig.contact.discordUrl} target="_blank" rel="noreferrer"><Icon name="headphones" /> Discord hỗ trợ</a>
+            <a href={siteConfig.contact.facebookUrl} target="_blank" rel="noreferrer"><Icon name="user" /> Facebook</a>
+            <a href={`tel:${siteConfig.contact.phone}`}><Icon name="phone" /> {siteConfig.contact.phone}</a>
+            <a href={`mailto:${siteConfig.contact.email}`}><Icon name="mail" /> {siteConfig.contact.email}</a>
+            <span><Icon name="clock" /> Giờ hỗ trợ: {businessConfig.supportHours}</span>
           </div>
         </div>
         <div>

@@ -16,11 +16,16 @@ type IconName =
   | "headphones"
   | "menu"
   | "monitor"
+  | "mail"
+  | "phone"
+  | "clock"
   | "palette"
   | "rocket"
   | "server"
   | "shield"
   | "spark"
+  | "sun"
+  | "moon"
   | "terminal"
   | "user"
   | "workflow";
@@ -45,10 +50,15 @@ const paths: Record<IconName, React.ReactNode> = {
   headphones: <><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><path d="M4 14h3v5H5a1 1 0 0 1-1-1v-4ZM20 14h-3v5h2a1 1 0 0 0 1-1v-4Z" /></>,
   menu: <><path d="M4 6h16M4 12h16M4 18h16" /></>,
   monitor: <><rect width="18" height="12" x="3" y="4" rx="2" /><path d="M8 20h8M12 16v4" /></>,
+  mail: <><rect width="18" height="14" x="3" y="5" rx="2" /><path d="m3 7 9 6 9-6" /></>,
+  phone: <path d="M7 3h3l1.2 4-2.1 1.4a14 14 0 0 0 6.5 6.5L17 12.8 21 14v3c0 1.1-.9 2-2 2C10.2 19 5 13.8 5 5a2 2 0 0 1 2-2Z" />,
+  clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
   palette: <><path d="M12 3a9 9 0 1 0 0 18h1.5a2 2 0 0 0 0-4H13a2 2 0 0 1 0-4h3a5 5 0 0 0 0-10h-4Z" /><path d="M7.5 10h.01M9 6.5h.01M14 6.5h.01M17 10h.01" /></>,
   rocket: <><path d="M14 6 9 11l4 4 5-5c1.6-1.6 2.3-3.5 2-6-2.5-.3-4.4.4-6 2Z" /><path d="M9 11H5l-2 2 5 1M13 15v4l-2 2-1-5" /><path d="M6 18c-1.7 0-2.7.7-3 2 1.3-.3 2-.3 3 0 .3-1 .3-1 0-2Z" /></>,
   server: <><rect width="18" height="6" x="3" y="4" rx="2" /><rect width="18" height="6" x="3" y="14" rx="2" /><path d="M7 7h.01M7 17h.01M11 7h6M11 17h6" /></>,
   shield: <><path d="M12 3 20 6v5c0 5-3.3 8.2-8 10-4.7-1.8-8-5-8-10V6l8-3Z" /><path d="m8 12 2.5 2.5L16 9" /></>,
+  sun: <><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" /></>,
+  moon: <path d="M20.5 14.3A8 8 0 0 1 9.7 3.5 8.1 8.1 0 1 0 20.5 14.3Z" />,
   spark: <><path d="m12 3-1.3 5.7L5 10l5.7 1.3L12 17l1.3-5.7L19 10l-5.7-1.3L12 3ZM19 16l-.5 2.5L16 19l2.5.5L19 22l.5-2.5L22 19l-2.5-.5L19 16Z" /></>,
   terminal: <><path d="m6 8 4 4-4 4" /><path d="M12 16h6" /></>,
   user: <><circle cx="12" cy="8" r="3" /><path d="M5 21a7 7 0 0 1 14 0" /></>,
