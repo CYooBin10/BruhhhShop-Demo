@@ -55,6 +55,7 @@ export const plans: Plan[] = [
     price: "239.000đ",
     period: "tháng",
     status: "Còn hàng",
+    popular: true,
   },
   {
     id: "bruh-vps-8-16",
@@ -66,6 +67,7 @@ export const plans: Plan[] = [
     price: "299.000đ",
     period: "tháng",
     status: "Còn hàng",
+    popular: true,
   },
   {
     id: "bruh-vps-16-32",
