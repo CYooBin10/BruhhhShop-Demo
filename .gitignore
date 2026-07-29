@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+.opencode/
+.env*
+!.env.example
+*.log
+*.tsbuildinfo
+public/assets/image/logo-header.png
