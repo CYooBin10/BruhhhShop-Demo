@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Footer } from "@/components/layout/Footer";
+import { PolicyShell } from "@/components/policy/PolicyShell";
 import { PolicyLayout } from "@/components/policy/PolicyLayout";
 import { policyLinks } from "@/config/policies";
 import { getPolicy } from "@/data/policies";
@@ -24,5 +24,5 @@ export default async function PolicyPage({ params }: PolicyPageProps) {
   const { slug } = await params;
   const policy = getPolicy(slug);
   if (!policy) notFound();
-  return <><PolicyLayout policy={policy} /><Footer /></>;
+  return <PolicyShell><PolicyLayout policy={policy} /></PolicyShell>;
 }

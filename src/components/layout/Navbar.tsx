@@ -2,6 +2,7 @@
 
 import type { User } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/layout/Footer";
 import { navigation } from "@/config/site";
 import { supabase } from "@/lib/supabase";
@@ -13,6 +14,7 @@ type NavbarProps = {
 };
 
 export function Navbar({ onAuth }: NavbarProps) {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("#trang-chu");
@@ -70,6 +72,8 @@ export function Navbar({ onAuth }: NavbarProps) {
   }, [user]);
 
   const closeMenu = () => setMenuOpen(false);
+  const getNavigationHref = (href: string) => pathname === "/" || !href.startsWith("#") ? href : `/${href}`;
+  const isNavigationActive = (href: string) => href.startsWith("#") ? pathname === "/" && activeSection === href : pathname.startsWith(href);
   const signOut = async () => {
     if (!supabase) return;
     const { error } = await supabase.auth.signOut();
@@ -82,7 +86,7 @@ export function Navbar({ onAuth }: NavbarProps) {
         <Logo />
         <nav className={`desktop-nav ${menuOpen ? "is-open" : ""}`} aria-label="Điều hướng chính">
           {navigation.map((item) => (
-            <a className={activeSection === item.href ? "is-active" : ""} href={item.href} key={item.href} onClick={closeMenu}>{item.label}</a>
+            <a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</a>
           ))}
         </nav>
         <div className="nav-actions">
@@ -92,7 +96,7 @@ export function Navbar({ onAuth }: NavbarProps) {
         </div>
       </div>
       <div id="main-navigation" className={`mobile-nav ${menuOpen ? "is-open" : ""}`}>
-        {navigation.map((item) => <a className={activeSection === item.href ? "is-active" : ""} href={item.href} key={item.href} onClick={closeMenu}>{item.label}</a>)}
+        {navigation.map((item) => <a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</a>)}
         {user ? <UserAccount username={profile?.userId === user.id ? profile.username : user.user_metadata.username || "Tài khoản"} email={user.email ?? ""} mobile onSignOut={() => { closeMenu(); void signOut(); }} /> : <div className="mobile-auth-actions"><button className="button button-ghost" type="button" onClick={() => { closeMenu(); onAuth("login"); }}>Đăng nhập</button><button className="button button-primary" type="button" onClick={() => { closeMenu(); onAuth("register"); }}>Đăng ký</button></div>}
       </div>
     </header>
