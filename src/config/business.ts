@@ -7,7 +7,7 @@ export const businessConfig = {
   technicalInspectionTime: unknownValue,
   maxResolutionTime: unknownValue,
   refundProcessingTime: unknownValue,
-  refundWindowHours: null as number | null,
+  refundWindowHours: 48 as number | null,
   deliveryTime: unknownValue,
   paymentMethods: ["Bank(VND)", "Paypal", "Visa"] as string[],
   lastPolicyUpdate: "29/07/2026",
