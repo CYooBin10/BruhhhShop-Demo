@@ -17,7 +17,7 @@ export const businessConfig = {
     portSpeed: "1 Gbps",
     monthlyTraffic: unknownValue,
     datacenter: unknownValue,
-    ddosProtection: "Anti DDoS 99,99%",
+    ddosProtection: "AntiDDoS Pro",
     supportedOperatingSystems: unknownValue,
     backupPolicy: unknownValue,
     fairUsePolicy: unknownValue,
