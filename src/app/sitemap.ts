@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
-import { policyLinks } from "@/config/policies";
-import { siteConfig } from "@/config/site";
+import { getRuntimeConfig } from "@/config/runtime";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const { policyLinks, site } = await getRuntimeConfig();
   const lastModified = new Date();
   return [
-    { url: siteConfig.url, lastModified },
-    { url: `${siteConfig.url}/chinh-sach`, lastModified },
-    ...policyLinks.map(({ slug }) => ({ url: `${siteConfig.url}/chinh-sach/${slug}`, lastModified })),
+    { url: site.url, lastModified },
+    { url: `${site.url}/chinh-sach`, lastModified },
+    ...policyLinks.map(({ slug }) => ({ url: `${site.url}/chinh-sach/${slug}`, lastModified })),
   ];
 }

@@ -1,24 +1,30 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { businessConfig } from "@/config/business";
-import { siteConfig } from "@/config/site";
+import { useRuntimeConfig } from "@/components/RuntimeConfigProvider";
 import { Icon } from "@/components/ui/Icon";
 
 export function Logo() {
+  const { site } = useRuntimeConfig();
+  const accentIndex = site.name.toLowerCase().lastIndexOf("node");
+  const primaryName = accentIndex > 0 ? site.name.slice(0, accentIndex) : site.name;
+  const accentName = accentIndex > 0 ? site.name.slice(accentIndex) : "";
   return (
-    <Link className="logo" href="/#trang-chu" aria-label="DiabloNode - Trang chủ">
+    <Link className="logo" href="/#trang-chu" aria-label={`${site.name} - Trang chủ`}>
       <Image alt="" aria-hidden="true" className="logo-image" height={64} priority src="/assets/image/logo.png?v=2" unoptimized width={64} />
-      <span>Diablo<strong>Node</strong></span>
+      <span>{primaryName}<strong>{accentName}</strong></span>
     </Link>
   );
 }
 
 export function Footer() {
+  const { business, site } = useRuntimeConfig();
   const legalLinks = [
-    { label: "Điều khoản dịch vụ", href: siteConfig.legal.termsUrl },
-    { label: "Bảo hành và hoàn tiền", href: siteConfig.legal.warrantyUrl },
-    { label: "Quyền riêng tư", href: siteConfig.legal.privacyUrl },
-    { label: "Sử dụng tài nguyên", href: siteConfig.legal.resourceUrl },
+    { label: "Điều khoản dịch vụ", href: site.legal.termsUrl },
+    { label: "Bảo hành và hoàn tiền", href: site.legal.warrantyUrl },
+    { label: "Quyền riêng tư", href: site.legal.privacyUrl },
+    { label: "Sử dụng tài nguyên", href: site.legal.resourceUrl },
   ];
 
   return (
@@ -27,11 +33,11 @@ export function Footer() {
         <div className="footer-brand">
           <Logo />
           <div className="footer-contact">
-            <a href={siteConfig.contact.discordUrl} target="_blank" rel="noreferrer"><Icon name="headphones" /> Discord hỗ trợ</a>
-            <a href={siteConfig.contact.facebookUrl} target="_blank" rel="noreferrer"><Icon name="user" /> Facebook</a>
-            <a href={`tel:${siteConfig.contact.phone}`}><Icon name="phone" /> {siteConfig.contact.phone}</a>
-            <a href={`mailto:${siteConfig.contact.email}`}><Icon name="mail" /> {siteConfig.contact.email}</a>
-            <span><Icon name="clock" /> Giờ hỗ trợ: {businessConfig.supportHours}</span>
+            <a href={site.contact.discordUrl} target="_blank" rel="noreferrer"><Icon name="headphones" /> Discord hỗ trợ</a>
+            <a href={site.contact.facebookUrl} target="_blank" rel="noreferrer"><Icon name="user" /> Facebook</a>
+            <a href={`tel:${site.contact.phone}`}><Icon name="phone" /> {site.contact.phone}</a>
+            <a href={`mailto:${site.contact.email}`}><Icon name="mail" /> {site.contact.email}</a>
+            <span><Icon name="clock" /> Giờ hỗ trợ: {business.supportHours}</span>
           </div>
         </div>
         <div>
@@ -41,7 +47,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="container footer-bottom"><span>© 2026 DiabloNode. All rights reserved.</span></div>
+      <div className="container footer-bottom"><span>© 2026 {site.name}. All rights reserved.</span></div>
     </footer>
   );
 }

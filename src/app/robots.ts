@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
-import { siteConfig } from "@/config/site";
+import { getRuntimeConfig } from "@/config/runtime";
 
-export default function robots(): MetadataRoute.Robots {
-  return { rules: { userAgent: "*", allow: "/" }, sitemap: `${siteConfig.url}/sitemap.xml` };
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const { site } = await getRuntimeConfig();
+  return { rules: { userAgent: "*", allow: "/" }, sitemap: `${site.url}/sitemap.xml` };
 }

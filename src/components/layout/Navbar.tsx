@@ -4,7 +4,7 @@ import type { User } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/layout/Footer";
-import { navigation, siteConfig } from "@/config/site";
+import { useRuntimeConfig } from "@/components/RuntimeConfigProvider";
 import { Icon } from "@/components/ui/Icon";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
@@ -13,6 +13,7 @@ type NavbarProps = {
 };
 
 export function Navbar({ onAuth }: NavbarProps) {
+  const { navigation } = useRuntimeConfig();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -42,7 +43,7 @@ export function Navbar({ onAuth }: NavbarProps) {
       window.removeEventListener("scroll", onScroll);
       observer.disconnect();
     };
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     let active = true;
@@ -117,6 +118,7 @@ export function Navbar({ onAuth }: NavbarProps) {
 }
 
 function NotificationBell() {
+  const { site } = useRuntimeConfig();
   const [open, setOpen] = useState(false);
   const noticeRef = useRef<HTMLDivElement>(null);
 
@@ -136,7 +138,7 @@ function NotificationBell() {
     };
   }, [open]);
 
-  return <div ref={noticeRef} className="notice-control"><button className="notice-trigger" type="button" aria-expanded={open} aria-label="Mở thông báo" onClick={() => setOpen((current) => !current)}><Icon name="bell" />{siteConfig.notifications.length > 0 ? <i /> : null}</button>{open ? <div className="notice-panel"><strong>Thông báo</strong>{siteConfig.notifications.length > 0 ? siteConfig.notifications.map((notice) => <div className="notice-item" key={notice.id}><b>{notice.title}</b><p>{notice.message}</p></div>) : <p className="notice-empty">Chưa có thông báo mới.</p>}</div> : null}</div>;
+  return <div ref={noticeRef} className="notice-control"><button className="notice-trigger" type="button" aria-expanded={open} aria-label="Mở thông báo" onClick={() => setOpen((current) => !current)}><Icon name="bell" />{site.notifications.length > 0 ? <i /> : null}</button>{open ? <div className="notice-panel"><strong>Thông báo</strong>{site.notifications.length > 0 ? site.notifications.map((notice) => <div className="notice-item" key={notice.id}><b>{notice.title}</b><p>{notice.message}</p></div>) : <p className="notice-empty">Chưa có thông báo mới.</p>}</div> : null}</div>;
 }
 
 type UserAccountProps = {

@@ -1,12 +1,14 @@
-import { businessConfig, configuredValue, unknownValue } from "@/config/business";
 import { policyLinks, type PolicySlug } from "@/config/policies";
-import { siteConfig } from "@/config/site";
-import type { PolicyData } from "@/types/site";
+import type { PolicyData, RuntimeConfig } from "@/types/site";
 
-const paymentMethods = businessConfig.paymentMethods.length > 0 ? businessConfig.paymentMethods.join(", ") : unknownValue;
-const refundWindow = businessConfig.refundWindowHours === null ? unknownValue : `${businessConfig.refundWindowHours} giờ đầu`;
-
-export const policies: Record<PolicySlug, PolicyData> = {
+export function buildPolicies(config: RuntimeConfig): Record<PolicySlug, PolicyData> {
+  const businessConfig = config.business;
+  const siteConfig = config.site;
+  const unknownValue = businessConfig.unknownValue;
+  const configuredValue = (value: string | number | null) => value === null || value === "" ? unknownValue : String(value);
+  const paymentMethods = businessConfig.paymentMethods.length > 0 ? businessConfig.paymentMethods.join(", ") : unknownValue;
+  const refundWindow = businessConfig.refundWindowHours === null ? unknownValue : `${businessConfig.refundWindowHours} giờ đầu`;
+  return {
   "dieu-khoan-dich-vu": {
     slug: "dieu-khoan-dich-vu",
     title: "Điều khoản dịch vụ",
@@ -79,8 +81,9 @@ export const policies: Record<PolicySlug, PolicyData> = {
       { id: "thong-tin-chua-cong-bo", title: "Thông tin cần xác nhận", paragraphs: [`Datacenter: ${businessConfig.infrastructure.datacenter}. Chống DDoS: ${businessConfig.infrastructure.ddosProtection}. Hệ điều hành hỗ trợ: ${businessConfig.infrastructure.supportedOperatingSystems}. Chính sách fair use: ${businessConfig.infrastructure.fairUsePolicy}. Các dữ liệu này cần được xác nhận trước khi mua nếu ảnh hưởng nhu cầu sử dụng.`] },
     ],
   },
-};
+  };
+}
 
-export function getPolicy(slug: string) {
+export function getPolicy(policies: Record<PolicySlug, PolicyData>, slug: string) {
   return policyLinks.some((policy) => policy.slug === slug) ? policies[slug as PolicySlug] : undefined;
 }

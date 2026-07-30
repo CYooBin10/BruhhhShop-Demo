@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import { PolicyShell } from "@/components/policy/PolicyShell";
 import { PolicyLayout } from "@/components/policy/PolicyLayout";
 import { policyLinks } from "@/config/policies";
-import { getPolicy } from "@/data/policies";
+import { getRuntimeConfig } from "@/config/runtime";
+import { buildPolicies, getPolicy } from "@/data/policies";
 
 type PolicyPageProps = {
   params: Promise<{ slug: string }>;
@@ -15,14 +16,16 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PolicyPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const policy = getPolicy(slug);
+  const config = await getRuntimeConfig();
+  const policy = getPolicy(buildPolicies(config), slug);
   if (!policy) return {};
-  return { title: `${policy.title} | DiabloNode`, description: policy.description };
+  return { title: `${policy.title} | ${config.site.name}`, description: policy.description };
 }
 
 export default async function PolicyPage({ params }: PolicyPageProps) {
   const { slug } = await params;
-  const policy = getPolicy(slug);
+  const config = await getRuntimeConfig();
+  const policy = getPolicy(buildPolicies(config), slug);
   if (!policy) notFound();
-  return <PolicyShell><PolicyLayout policy={policy} /></PolicyShell>;
+  return <PolicyShell><PolicyLayout config={config} policy={policy} /></PolicyShell>;
 }

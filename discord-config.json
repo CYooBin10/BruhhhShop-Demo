@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "site": {
+    "name": "DiabloNode",
+    "productName": "DiabloNode VPS",
+    "title": "DiabloNode – VPS giá rẻ",
+    "url": "https://bruhhh-shop-demo.vercel.app",
+    "description": "DiabloNode cung cấp các gói VPS giá hợp lý, cấu hình rõ ràng, sản phẩm chất lượng và có bảo hành.",
+    "notifications": [
+      {
+        "id": "welcome",
+        "title": "Thông báo",
+        "message": "Theo dõi DiabloNode để nhận cập nhật VPS và chương trình mới."
+      }
+    ],
+    "contact": {
+      "facebookUrl": "https://www.facebook.com/huyy.bao.375595",
+      "discordUrl": "https://discord.gg/jhsJHVVqB",
+      "phone": "0876334442",
+      "email": "toimecode@hotmail.com"
+    },
+    "legal": {
+      "termsUrl": "/chinh-sach/dieu-khoan-dich-vu",
+      "warrantyUrl": "/chinh-sach/bao-hanh-hoan-tien",
+      "privacyUrl": "/chinh-sach/quyen-rieng-tu",
+      "paymentUrl": "/chinh-sach/thanh-toan-ban-giao",
+      "resourceUrl": "/chinh-sach/su-dung-tai-nguyen"
+    }
+  },
+  "navigation": [
+    { "label": "Trang chủ", "href": "#trang-chu" },
+    { "label": "Bảng giá", "href": "#bang-gia" },
+    { "label": "Chính sách", "href": "/chinh-sach" },
+    { "label": "Liên hệ", "href": "#lien-he" }
+  ],
+  "business": {
+    "unknownValue": "Chưa cập nhật",
+    "supportHours": "24/7",
+    "supportChannel": "Chưa cập nhật",
+    "warrantyResponseTime": "Chưa cập nhật",
+    "technicalInspectionTime": "Chưa cập nhật",
+    "maxResolutionTime": "Chưa cập nhật",
+    "refundProcessingTime": "Chưa cập nhật",
+    "refundWindowHours": 48,
+    "deliveryTime": "Chưa cập nhật",
+    "paymentMethods": ["Bank(VND)", "Paypal", "Visa"],
+    "lastPolicyUpdate": "29/07/2026",
+    "infrastructure": {
+      "cpuModel": "AMD EPYC 7571",
+      "vcpuType": "Chưa cập nhật",
+      "portSpeed": "1 Gbps",
+      "monthlyTraffic": "Chưa cập nhật",
+      "datacenter": "Chưa cập nhật",
+      "ddosProtection": "AntiDDoS Pro",
+      "supportedOperatingSystems": "Chưa cập nhật",
+      "backupPolicy": "Chưa cập nhật",
+      "fairUsePolicy": "Chưa cập nhật"
+    }
+  },
+  "policyLinks": [
+    { "slug": "dieu-khoan-dich-vu", "label": "Điều khoản dịch vụ" },
+    { "slug": "bao-hanh-hoan-tien", "label": "Chính sách bảo hành và hoàn tiền" },
+    { "slug": "quyen-rieng-tu", "label": "Chính sách quyền riêng tư" },
+    { "slug": "thanh-toan-ban-giao", "label": "Chính sách thanh toán và bàn giao VPS" },
+    { "slug": "su-dung-tai-nguyen", "label": "Quy định sử dụng tài nguyên" }
+  ],
+  "plans": [
+    { "id": "bruh-vps-1-1", "name": "DiabloNode VPS 1-1", "cpu": "1 vCPU", "ram": "1 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "59.000đ", "period": "tháng", "status": "Còn hàng" },
+    { "id": "bruh-vps-1-2", "name": "DiabloNode VPS 1-2", "cpu": "1 vCPU", "ram": "2 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "79.000đ", "period": "tháng", "status": "Còn hàng" },
+    { "id": "bruh-vps-2-2", "name": "DiabloNode VPS 2-2", "cpu": "2 vCPU", "ram": "2 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "99.000đ", "period": "tháng", "status": "Còn hàng" },
+    { "id": "bruh-vps-2-4", "name": "DiabloNode VPS 2-4", "cpu": "2 vCPU", "ram": "4 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "149.000đ", "period": "tháng", "status": "Còn hàng" },
+    { "id": "bruh-vps-2-8", "name": "DiabloNode VPS 2-8", "cpu": "2 vCPU", "ram": "8 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "239.000đ", "period": "tháng", "status": "Còn hàng" },
+    { "id": "bruh-vps-4-8", "name": "DiabloNode VPS 4-8", "cpu": "4 vCPU", "ram": "8 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "299.000đ", "period": "tháng", "status": "Còn hàng", "popular": true },
+    { "id": "bruh-vps-4-16", "name": "DiabloNode VPS 4-16", "cpu": "4 vCPU", "ram": "16 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "349.000đ", "period": "tháng", "status": "Còn hàng" },
+    { "id": "bruh-vps-8-16", "name": "DiabloNode VPS 8-16", "cpu": "8 vCPU", "ram": "16 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "599.000đ", "period": "tháng", "status": "Còn hàng", "popular": true },
+    { "id": "bruh-vps-16-32", "name": "DiabloNode VPS 16-32", "cpu": "16 vCPU", "ram": "32 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "829.000đ", "period": "tháng", "status": "Hết hàng" }
+  ],
+  "promotions": {
+    "bruh-vps-1-1": { "originalPrice": null, "salePrice": 59000 },
+    "bruh-vps-1-2": { "originalPrice": null, "salePrice": 79000 },
+    "bruh-vps-2-2": { "originalPrice": null, "salePrice": 99000 },
+    "bruh-vps-2-4": { "originalPrice": 179000, "salePrice": 119000 },
+    "bruh-vps-2-8": { "originalPrice": 239000, "salePrice": 179000 },
+    "bruh-vps-4-8": { "originalPrice": 299000, "salePrice": 239000 },
+    "bruh-vps-4-16": { "originalPrice": 499000, "salePrice": 349000 },
+    "bruh-vps-8-16": { "originalPrice": 899000, "salePrice": 599000 },
+    "bruh-vps-16-32": { "originalPrice": 129000000, "salePrice": 829000 }
+  }
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FormEvent, useEffect, useId, useRef, useState } from "react";
-import { policyUrls } from "@/config/policies";
+import { useRuntimeConfig } from "@/components/RuntimeConfigProvider";
 import { supabase } from "@/lib/supabase";
 import { Icon } from "@/components/ui/Icon";
 
@@ -15,6 +15,7 @@ type AuthModalProps = {
 };
 
 export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
+  const { site } = useRuntimeConfig();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
@@ -98,7 +99,7 @@ export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
         <header className="auth-header">
           <span className="auth-symbol"><Icon name="user" /></span>
           <h2 id={titleId}>{mode === "login" ? "Chào mừng trở lại" : "Tạo tài khoản"}</h2>
-          <p>{mode === "login" ? "Đăng nhập để quản lý dịch vụ của bạn." : "Điền thông tin để đăng ký DiabloNode."}</p>
+          <p>{mode === "login" ? "Đăng nhập để quản lý dịch vụ của bạn." : `Điền thông tin để đăng ký ${site.name}.`}</p>
         </header>
         <div className="auth-tabs" role="tablist">
           <button className={mode === "login" ? "is-active" : ""} type="button" role="tab" aria-selected={mode === "login"} onClick={() => changeMode("login")}>Đăng nhập</button>
@@ -111,7 +112,7 @@ export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
             <AuthField autoComplete={mode === "login" ? "current-password" : "new-password"} icon="shield" label="Mật khẩu" minLength={8} name="password" type="password" value={password} onChange={setPassword} />
             {mode === "register" ? <AuthField autoComplete="new-password" icon="shield" label="Xác nhận mật khẩu" minLength={8} name="confirmPassword" type="password" value={confirmPassword} onChange={setConfirmPassword} /> : null}
           </div>
-          {mode === "register" ? <label className="auth-agreement"><input checked={agreed} type="checkbox" onChange={(event) => setAgreed(event.target.checked)} /><span>Tôi đồng ý với <Link href={policyUrls.terms} target="_blank">Điều khoản dịch vụ</Link> và <Link href={policyUrls.privacy} target="_blank">Chính sách quyền riêng tư</Link>.</span></label> : null}
+          {mode === "register" ? <label className="auth-agreement"><input checked={agreed} type="checkbox" onChange={(event) => setAgreed(event.target.checked)} /><span>Tôi đồng ý với <Link href={site.legal.termsUrl} target="_blank">Điều khoản dịch vụ</Link> và <Link href={site.legal.privacyUrl} target="_blank">Chính sách quyền riêng tư</Link>.</span></label> : null}
           <button className="button button-primary auth-submit" disabled={isSubmitting || (mode === "register" && !agreed)} type="submit">{isSubmitting ? "Đang xử lý" : mode === "login" ? "Đăng nhập" : "Tạo tài khoản"}<Icon name="arrow-right" /></button>
           {message ? <p className="auth-message" role="status">{message}</p> : null}
         </form>

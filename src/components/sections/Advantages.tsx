@@ -1,3 +1,4 @@
+import { getRuntimeConfig } from "@/config/runtime";
 import { Icon } from "@/components/ui/Icon";
 
 const reasons = [
@@ -7,6 +8,7 @@ const reasons = [
   "Thông báo rõ giới hạn CPU, mạng và tài nguyên.",
 ];
 
-export function Advantages() {
-  return <section className="section section-advantages" id="uu-diem"><div className="container advantages-compact"><div><p className="section-label">Thông tin có thể kiểm chứng</p><h2>Vì sao chọn <span>DiabloNode?</span></h2></div><ul>{reasons.map((reason) => <li key={reason}><Icon name="circle-check" /><span>{reason}</span></li>)}</ul></div></section>;
+export async function Advantages() {
+  const { site } = await getRuntimeConfig();
+  return <section className="section section-advantages" id="uu-diem"><div className="container advantages-compact"><div><p className="section-label">Thông tin có thể kiểm chứng</p><h2>Vì sao chọn <span>{site.name}?</span></h2></div><ul>{reasons.map((reason) => <li key={reason}><Icon name="circle-check" /><span>{reason}</span></li>)}</ul></div></section>;
 }
