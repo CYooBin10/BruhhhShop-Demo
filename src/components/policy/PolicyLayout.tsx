@@ -19,7 +19,7 @@ export function PolicyLayout({ policy }: PolicyLayoutProps) {
           <PolicySidebar policy={policy} />
           <div className="policy-content">
             {policy.sections.map((section) => <PolicySection key={section.id} section={section} />)}
-            <div className="policy-contact"><strong>Cần làm rõ điều khoản?</strong><span>Liên hệ Bruhhh Cloud qua email hoặc kênh hỗ trợ chính thức.</span><a href={`mailto:${siteConfig.contact.email}`}>Liên hệ hỗ trợ <Icon name="arrow-up-right" /></a></div>
+            <div className="policy-contact"><strong>Cần làm rõ điều khoản?</strong><span>Liên hệ DiabloNode qua email hoặc kênh hỗ trợ chính thức.</span><a href={`mailto:${siteConfig.contact.email}`}>Liên hệ hỗ trợ <Icon name="arrow-up-right" /></a></div>
           </div>
         </div>
       </div>

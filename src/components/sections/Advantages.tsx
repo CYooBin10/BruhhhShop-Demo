@@ -8,5 +8,5 @@ const reasons = [
 ];
 
 export function Advantages() {
-  return <section className="section section-advantages" id="uu-diem"><div className="container advantages-compact"><div><p className="section-label">Thông tin có thể kiểm chứng</p><h2>Vì sao chọn <span>Bruhhh Cloud?</span></h2></div><ul>{reasons.map((reason) => <li key={reason}><Icon name="circle-check" /><span>{reason}</span></li>)}</ul></div></section>;
+  return <section className="section section-advantages" id="uu-diem"><div className="container advantages-compact"><div><p className="section-label">Thông tin có thể kiểm chứng</p><h2>Vì sao chọn <span>DiabloNode?</span></h2></div><ul>{reasons.map((reason) => <li key={reason}><Icon name="circle-check" /><span>{reason}</span></li>)}</ul></div></section>;
 }

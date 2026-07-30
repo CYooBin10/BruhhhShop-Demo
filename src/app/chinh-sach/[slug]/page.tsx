@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PolicyPageProps): Promise<Met
   const { slug } = await params;
   const policy = getPolicy(slug);
   if (!policy) return {};
-  return { title: `${policy.title} | Bruhhh Cloud`, description: policy.description };
+  return { title: `${policy.title} | DiabloNode`, description: policy.description };
 }
 
 export default async function PolicyPage({ params }: PolicyPageProps) {

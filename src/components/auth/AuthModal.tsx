@@ -98,7 +98,7 @@ export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
         <header className="auth-header">
           <span className="auth-symbol"><Icon name="user" /></span>
           <h2 id={titleId}>{mode === "login" ? "Chào mừng trở lại" : "Tạo tài khoản"}</h2>
-          <p>{mode === "login" ? "Đăng nhập để quản lý dịch vụ của bạn." : "Điền thông tin để đăng ký Bruhhh Cloud."}</p>
+          <p>{mode === "login" ? "Đăng nhập để quản lý dịch vụ của bạn." : "Điền thông tin để đăng ký DiabloNode."}</p>
         </header>
         <div className="auth-tabs" role="tablist">
           <button className={mode === "login" ? "is-active" : ""} type="button" role="tab" aria-selected={mode === "login"} onClick={() => changeMode("login")}>Đăng nhập</button>

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: siteConfig.title,
   description: siteConfig.description,
   openGraph: { title: siteConfig.title, description: siteConfig.description, type: "website", locale: "vi_VN", siteName: siteConfig.name },
-  icons: { icon: "/assets/image/logo.png", apple: "/assets/image/logo.png" },
+  icons: { icon: "/assets/image/logo.png?v=2", apple: "/assets/image/logo.png?v=2" },
   robots: { index: true, follow: true },
 };
 

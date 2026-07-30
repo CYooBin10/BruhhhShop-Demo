@@ -3,7 +3,7 @@ import type { Plan } from "@/types/site";
 export const plans: Plan[] = [
   {
     id: "bruh-vps-1-1",
-    name: "Bruh VPS 1-1",
+    name: "DiabloNode VPS 1-1",
     cpu: "1 vCPU",
     ram: "1 GB",
     portSpeed: "Tối đa 1 Gbps",
@@ -14,7 +14,7 @@ export const plans: Plan[] = [
   },
   {
     id: "bruh-vps-1-2",
-    name: "Bruh VPS 1-2",
+    name: "DiabloNode VPS 1-2",
     cpu: "1 vCPU",
     ram: "2 GB",
     portSpeed: "Tối đa 1 Gbps",
@@ -25,7 +25,7 @@ export const plans: Plan[] = [
   },
   {
     id: "bruh-vps-2-4",
-    name: "Bruh VPS 2-4",
+    name: "DiabloNode VPS 2-4",
     cpu: "2 vCPU",
     ram: "4 GB",
     portSpeed: "Tối đa 1 Gbps",
@@ -36,7 +36,7 @@ export const plans: Plan[] = [
   },
   {
     id: "bruh-vps-2-8",
-    name: "Bruh VPS 2-8",
+    name: "DiabloNode VPS 2-8",
     cpu: "2 vCPU",
     ram: "8 GB",
     portSpeed: "Tối đa 1 Gbps",
@@ -47,7 +47,7 @@ export const plans: Plan[] = [
   },
   {
     id: "bruh-vps-4-8",
-    name: "Bruh VPS 4-8",
+    name: "DiabloNode VPS 4-8",
     cpu: "4 vCPU",
     ram: "8 GB",
     portSpeed: "Tối đa 1 Gbps",
@@ -59,7 +59,7 @@ export const plans: Plan[] = [
   },
   {
     id: "bruh-vps-8-16",
-    name: "Bruh VPS 8-16",
+    name: "DiabloNode VPS 8-16",
     cpu: "8 vCPU",
     ram: "16 GB",
     portSpeed: "Tối đa 1 Gbps",
@@ -71,7 +71,7 @@ export const plans: Plan[] = [
   },
   {
     id: "bruh-vps-16-32",
-    name: "Bruh VPS 16-32",
+    name: "DiabloNode VPS 16-32",
     cpu: "16 vCPU",
     ram: "32 GB",
     portSpeed: "Tối đa 1 Gbps",

@@ -5,8 +5,8 @@ import { businessConfig } from "@/config/business";
 import { policyLinks } from "@/config/policies";
 
 export const metadata: Metadata = {
-  title: "Chính sách & Điều khoản | Bruhhh Cloud",
-  description: "Các chính sách và điều khoản sử dụng dịch vụ Bruhhh Cloud.",
+  title: "Chính sách & Điều khoản | DiabloNode",
+  description: "Các chính sách và điều khoản sử dụng dịch vụ DiabloNode.",
 };
 
 export default function PoliciesPage() {

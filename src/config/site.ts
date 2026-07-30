@@ -1,12 +1,12 @@
 export const siteConfig = {
-  name: "Bruhhh Cloud",
-  productName: "Bruh VPS",
-  title: "Bruhhh Cloud – Bruh VPS giá rẻ",
+  name: "DiabloNode",
+  productName: "DiabloNode VPS",
+  title: "DiabloNode – VPS giá rẻ",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://bruhhh-shop-demo.vercel.app",
   description:
-    "Bruhhh Cloud cung cấp các gói Bruh VPS giá hợp lý, cấu hình rõ ràng, sản phẩm chất lượng và có bảo hành.",
+    "DiabloNode cung cấp các gói VPS giá hợp lý, cấu hình rõ ràng, sản phẩm chất lượng và có bảo hành.",
   notifications: [
-    { id: "welcome", title: "Thông báo", message: "Theo dõi Bruhhh Cloud để nhận cập nhật VPS và chương trình mới." },
+    { id: "welcome", title: "Thông báo", message: "Theo dõi DiabloNode để nhận cập nhật VPS và chương trình mới." },
   ],
   contact: {
     facebookUrl: "https://www.facebook.com/huyy.bao.375595",

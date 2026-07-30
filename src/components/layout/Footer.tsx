@@ -6,9 +6,9 @@ import { Icon } from "@/components/ui/Icon";
 
 export function Logo() {
   return (
-    <Link className="logo" href="/#trang-chu" aria-label="Bruhhh Cloud - Trang chủ">
-      <Image alt="Bruhhh Cloud" className="logo-image" height={64} priority src="/assets/image/logo.png" width={64} />
-      <span>Bruhhh <strong>Cloud</strong></span>
+    <Link className="logo" href="/#trang-chu" aria-label="DiabloNode - Trang chủ">
+      <Image alt="" aria-hidden="true" className="logo-image" height={64} priority src="/assets/image/logo.png?v=2" unoptimized width={64} />
+      <span>Diablo<strong>Node</strong></span>
     </Link>
   );
 }
@@ -41,7 +41,7 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="container footer-bottom"><span>© 2026 Bruhhh Cloud. All rights reserved.</span></div>
+      <div className="container footer-bottom"><span>© 2026 DiabloNode. All rights reserved.</span></div>
     </footer>
   );
 }
