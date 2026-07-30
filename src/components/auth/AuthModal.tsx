@@ -93,7 +93,7 @@ export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
 
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <section aria-labelledby={titleId} aria-modal="true" className="auth-modal" role="dialog">
+      <section key={mode} aria-labelledby={titleId} aria-modal="true" className="auth-modal" role="dialog">
         <button ref={closeButtonRef} className="modal-close auth-close" type="button" aria-label="Đóng cửa sổ tài khoản" onClick={onClose}><Icon name="close" /></button>
         <header className="auth-header">
           <span className="auth-symbol"><Icon name="user" /></span>
