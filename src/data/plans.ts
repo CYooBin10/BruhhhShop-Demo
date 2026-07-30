@@ -91,4 +91,15 @@ export const plans: Plan[] = [
     status: "Còn hàng",
     popular: true,
   },
+  {
+    id: "bruh-vps-16-32",
+    name: "DiabloNode VPS 16-32",
+    cpu: "16 vCPU",
+    ram: "32 GB",
+    portSpeed: "Tối đa 1 Gbps",
+    storage: "80 GB NVMe",
+    price: "829.000đ",
+    period: "tháng",
+    status: "Còn hàng",
+  },
 ];
