@@ -2,6 +2,7 @@ import Link from "next/link";
 import { businessConfig } from "@/config/business";
 import { policyUrls } from "@/config/policies";
 import { formatVnd, getDiscountPercent, getPlanPromotion } from "@/config/pricing";
+import { LegitTicker } from "@/components/legits/LegitTicker";
 import { Icon } from "@/components/ui/Icon";
 import type { Plan } from "@/types/site";
 
@@ -11,7 +12,7 @@ type PricingProps = {
 };
 
 export function Pricing({ plans, onOrder }: PricingProps) {
-  return <section className="section section-pricing" id="bang-gia"><div className="container"><div className="section-heading pricing-heading"><div><p className="section-label">Bảng giá</p><h2>Chọn gói <span>DiabloNode VPS</span></h2></div></div><div className="pricing-grid">{plans.map((plan) => <PricingCard key={plan.id} plan={plan} onOrder={onOrder} />)}</div><p className="pricing-note"><Icon name="circle-check" /> vCPU có thể là tài nguyên dùng chung. Tốc độ mạng thực tế phụ thuộc hạ tầng và tình trạng sử dụng. <Link href={policyUrls.resources}>Xem Quy định sử dụng tài nguyên.</Link></p><p className="pricing-addon-note">Bổ sung dung lượng: cứ +20 GB disk = +25.000đ</p></div></section>;
+  return <section className="section section-pricing" id="bang-gia"><div className="container"><LegitTicker /><div className="section-heading pricing-heading"><div><p className="section-label">Bảng giá</p><h2>Chọn gói <span>DiabloNode VPS</span></h2></div></div><div className="pricing-grid">{plans.map((plan) => <PricingCard key={plan.id} plan={plan} onOrder={onOrder} />)}</div><p className="pricing-note"><Icon name="circle-check" /> vCPU có thể là tài nguyên dùng chung. Tốc độ mạng thực tế phụ thuộc hạ tầng và tình trạng sử dụng. <Link href={policyUrls.resources}>Xem Quy định sử dụng tài nguyên.</Link></p><p className="pricing-addon-note">Bổ sung dung lượng: cứ +20 GB disk = +25.000đ</p></div></section>;
 }
 
 function PricingCard({ plan, onOrder }: { plan: Plan; onOrder: (plan: Plan) => void }) {
