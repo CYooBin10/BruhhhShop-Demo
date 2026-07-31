@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { site } = await getRuntimeConfig();
-  return { metadataBase: new URL(site.url), title: site.title, description: site.description, openGraph: { title: site.title, description: site.description, type: "website", locale: "vi_VN", siteName: site.name }, icons: { icon: "/assets/image/logo.png?v=2", apple: "/assets/image/logo.png?v=2" }, robots: { index: true, follow: true } };
+  return { metadataBase: new URL(site.url), title: site.title, description: site.description, openGraph: { title: site.title, description: site.description, type: "website", locale: "vi_VN", siteName: site.name, images: [{ url: "/assets/image/logo.png?v=3", alt: `${site.name} logo` }] }, twitter: { card: "summary", title: site.title, description: site.description, images: ["/assets/image/logo.png?v=3"] }, icons: { icon: "/assets/image/logo.png?v=2", apple: "/assets/image/logo.png?v=2" }, robots: { index: true, follow: true } };
 }
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
