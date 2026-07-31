@@ -1,6 +1,6 @@
 import "server-only";
 
-import { unstable_cache } from "next/cache";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { businessConfig, unknownValue } from "@/config/business";
 import { policyLinks } from "@/config/policies";
 import { pricingConfig } from "@/config/pricing";
@@ -16,6 +16,7 @@ const CONFIG_MAX_BYTES = 65536;
 const CONFIG_CDN_HOSTS = new Set(["cdn.discordapp.com", "media.discordapp.net"]);
 const POLICY_SLUGS = new Set<string>(policyLinks.map(({ slug }) => slug));
 const PLAN_STATUSES = new Set(["Còn hàng", "Hết hàng"]);
+const RUNTIME_CONFIG_CACHE_TAG = "discord-runtime-config";
 
 const fallbackConfig: RuntimeConfig = {
   site: {
@@ -206,68 +207,63 @@ function isConfigAttachment(value: unknown) {
   return CONFIG_CDN_HOSTS.has(hostname) ? url : null;
 }
 
-function logConfigIssue(message: string) {
-  console.error(`[runtime-config] ${message}`);
+function configFailure(code: string) {
+  console.error(`[runtime-config] ${code}`);
+  return { config: null, error: code };
 }
 
-async function fetchRemoteConfig() {
-  const token = process.env.DISCORD_CONFIG_BOT_TOKEN;
-  if (!token) {
-    logConfigIssue("DISCORD_CONFIG_BOT_TOKEN is not set; using local fallback.");
-    return null;
-  }
+async function fetchRemoteConfigWithToken(token: string, force = false): Promise<{ config: RuntimeConfig | null; error: string | null }> {
   try {
-    const messagesResponse = await fetch(`${DISCORD_API}/channels/${CONFIG_CHANNEL_ID}/messages?limit=50`, { headers: { Authorization: `Bot ${token}`, Accept: "application/json" }, next: { revalidate: 60 }, signal: AbortSignal.timeout(10000) });
-    if (!messagesResponse.ok) {
-      logConfigIssue(`Discord messages request failed with HTTP ${messagesResponse.status}; using local fallback.`);
-      return null;
-    }
+    const messagesResponse = await fetch(`${DISCORD_API}/channels/${CONFIG_CHANNEL_ID}/messages?limit=100`, { headers: { Authorization: `Bot ${token}`, Accept: "application/json" }, ...(force ? { cache: "no-store" as const } : { next: { revalidate: 60, tags: [RUNTIME_CONFIG_CACHE_TAG] } }), signal: AbortSignal.timeout(10000) });
+    if (!messagesResponse.ok) return configFailure(`DISCORD_MESSAGES_HTTP_${messagesResponse.status}`);
     const messages: unknown = await messagesResponse.json();
-    if (!Array.isArray(messages)) {
-      logConfigIssue("Discord messages response is invalid; using local fallback.");
-      return null;
-    }
-    const attachmentMessages = messages.filter((item) => isRecord(item) && Array.isArray(item.attachments) && item.attachments.some(isConfigAttachment));
-    const message = attachmentMessages.find((item) => isRecord(item) && isRecord(item.author) && typeof item.author.id === "string" && CONFIG_AUTHOR_IDS.has(item.author.id));
+    if (!Array.isArray(messages)) return configFailure("DISCORD_MESSAGES_INVALID");
+
+    const namedAttachmentMessages = messages.filter((item) => isRecord(item) && Array.isArray(item.attachments) && item.attachments.some((attachment) => isRecord(attachment) && attachment.filename === CONFIG_FILE_NAME));
+    const message = namedAttachmentMessages.find((item) => isRecord(item) && isRecord(item.author) && typeof item.author.id === "string" && CONFIG_AUTHOR_IDS.has(item.author.id) && Array.isArray(item.attachments) && item.attachments.some(isConfigAttachment));
     if (!message || !isRecord(message) || !Array.isArray(message.attachments)) {
-      const authorIds = attachmentMessages.flatMap((item) => isRecord(item) && isRecord(item.author) && typeof item.author.id === "string" ? [item.author.id] : []);
-      logConfigIssue(authorIds.length > 0 ? `Found discord-config.json from disallowed author ID(s): ${[...new Set(authorIds)].join(", ")}; using local fallback.` : "No discord-config.json attachment was found; using local fallback.");
-      return null;
+      if (namedAttachmentMessages.length > 0) return configFailure("CONFIG_ATTACHMENT_AUTHOR_OR_URL_INVALID");
+      return configFailure("CONFIG_ATTACHMENT_NOT_FOUND_IN_LATEST_100");
     }
+
     const attachmentUrl = message.attachments.map(isConfigAttachment).find((url): url is string => url !== null);
-    if (!attachmentUrl) {
-      logConfigIssue("Config attachment URL is invalid; using local fallback.");
-      return null;
-    }
-    const configResponse = await fetch(attachmentUrl, { next: { revalidate: 60 }, signal: AbortSignal.timeout(10000) });
-    if (!configResponse.ok || !CONFIG_CDN_HOSTS.has(new URL(configResponse.url).hostname)) {
-      logConfigIssue("Config attachment could not be downloaded; using local fallback.");
-      return null;
-    }
+    if (!attachmentUrl) return configFailure("CONFIG_ATTACHMENT_URL_OR_HOST_INVALID");
+    const configResponse = await fetch(attachmentUrl, { ...(force ? { cache: "no-store" as const } : { next: { revalidate: 60, tags: [RUNTIME_CONFIG_CACHE_TAG] } }), signal: AbortSignal.timeout(10000) });
+    if (!configResponse.ok || !CONFIG_CDN_HOSTS.has(new URL(configResponse.url).hostname)) return configFailure(`CONFIG_ATTACHMENT_HTTP_${configResponse.status}`);
     const contentLength = Number(configResponse.headers.get("content-length"));
-    if (Number.isFinite(contentLength) && contentLength > CONFIG_MAX_BYTES) {
-      logConfigIssue("Config attachment exceeds 64 KB; using local fallback.");
-      return null;
-    }
+    if (Number.isFinite(contentLength) && contentLength > CONFIG_MAX_BYTES) return configFailure("CONFIG_ATTACHMENT_TOO_LARGE");
     const content = await configResponse.text();
-    if (content.length > CONFIG_MAX_BYTES) {
-      logConfigIssue("Config attachment exceeds 64 KB; using local fallback.");
-      return null;
-    }
+    if (content.length > CONFIG_MAX_BYTES) return configFailure("CONFIG_ATTACHMENT_TOO_LARGE");
+
     let parsed: unknown;
     try {
       parsed = JSON.parse(content);
     } catch {
-      logConfigIssue("Config attachment is not valid JSON; using local fallback.");
-      return null;
+      return configFailure("CONFIG_JSON_INVALID");
     }
     const config = parseRuntimeConfig(parsed);
-    if (!config) logConfigIssue("Config attachment does not match required schema; using local fallback.");
-    return config;
+    return config ? { config, error: null } : configFailure("CONFIG_SCHEMA_INVALID");
   } catch {
-    logConfigIssue("Discord config request failed; using local fallback.");
-    return null;
+    return configFailure("DISCORD_REQUEST_FAILED");
   }
 }
 
-export const getRuntimeConfig = unstable_cache(async (): Promise<RuntimeConfig> => await fetchRemoteConfig() ?? fallbackConfig, ["discord-runtime-config"], { revalidate: 60 });
+async function fetchRemoteConfig(force = false): Promise<{ config: RuntimeConfig | null; error: string | null }> {
+  const token = process.env.DISCORD_CONFIG_BOT_TOKEN;
+  if (!token) return configFailure("DISCORD_CONFIG_BOT_TOKEN_MISSING");
+  return fetchRemoteConfigWithToken(token, force);
+}
+
+const getCachedRuntimeConfig = unstable_cache(async (): Promise<RuntimeConfig> => (await fetchRemoteConfig()).config ?? fallbackConfig, [RUNTIME_CONFIG_CACHE_TAG], { revalidate: 60, tags: [RUNTIME_CONFIG_CACHE_TAG] });
+
+export async function getRuntimeConfig() {
+  return getCachedRuntimeConfig();
+}
+
+export async function refreshRuntimeConfig() {
+  const result = await fetchRemoteConfig(true);
+  if (!result.config) return { config: fallbackConfig, source: "fallback" as const, error: result.error };
+  revalidateTag(RUNTIME_CONFIG_CACHE_TAG, { expire: 0 });
+  revalidatePath("/", "layout");
+  return { config: result.config, source: "discord" as const, error: null };
+}

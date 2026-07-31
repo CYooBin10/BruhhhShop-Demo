@@ -1,6 +1,7 @@
 "use client";
 
 import type { User } from "@supabase/supabase-js";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { Logo } from "@/components/layout/Footer";
@@ -150,6 +151,7 @@ type UserAccountProps = {
 
 function UserAccount({ email, mobile = false, onSignOut, username }: UserAccountProps) {
   const [open, setOpen] = useState(false);
+  const isAdmin = email.trim().toLowerCase() === "tranhuybao000@gmail.com";
   const accountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -168,5 +170,5 @@ function UserAccount({ email, mobile = false, onSignOut, username }: UserAccount
     };
   }, [open]);
 
-  return <div ref={accountRef} className={`account-user ${mobile ? "mobile-account" : ""}`}><button className="account-trigger" type="button" aria-expanded={open} aria-haspopup="menu" onClick={() => setOpen((current) => !current)}><span className="account-avatar"><Icon name="user" /></span><span className="account-copy"><strong>{username}</strong><small>{email}</small></span><Icon name="chevron-down" /></button>{open ? <div className="account-menu" role="menu"><button disabled type="button" role="menuitem">Dashboard</button><button disabled type="button" role="menuitem">Thông tin cá nhân</button><button disabled type="button" role="menuitem">Lịch sử mua</button><button className="account-signout" type="button" role="menuitem" onClick={onSignOut}>Đăng xuất</button></div> : null}</div>;
+  return <div ref={accountRef} className={`account-user ${mobile ? "mobile-account" : ""}`}><button className="account-trigger" type="button" aria-expanded={open} aria-haspopup="menu" onClick={() => setOpen((current) => !current)}><span className="account-avatar"><Icon name="user" /></span><span className="account-copy"><strong>{username}</strong><small>{email}</small></span><Icon name="chevron-down" /></button>{open ? <div className="account-menu" role="menu">{isAdmin ? <Link className="account-admin" href="/admin" role="menuitem" onClick={() => setOpen(false)}>Admin</Link> : null}<button disabled type="button" role="menuitem">Dashboard</button><button disabled type="button" role="menuitem">Thông tin cá nhân</button><button disabled type="button" role="menuitem">Lịch sử mua</button><button className="account-signout" type="button" role="menuitem" onClick={onSignOut}>Đăng xuất</button></div> : null}</div>;
 }
