@@ -34,17 +34,19 @@ export function OrderModal({ plan, onClose }: OrderModalProps) {
   const originalPrice = promotion?.originalPrice ?? 0;
   const salePrice = promotion?.salePrice ?? 0;
   const price = originalPrice > salePrice && salePrice > 0 ? formatVnd(salePrice) : plan.price;
+  const zaloPhoneNumber = site.contact.phone.replace(/\D/g, "").replace(/^0/, "84");
 
   return (
     <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <section aria-labelledby={titleId} aria-modal="true" className="order-modal contact-modal" role="dialog">
         <div className="modal-header"><div><p className="section-label">Đặt hàng qua kênh hỗ trợ</p><h2>Mua <span>{plan.name}</span></h2></div><button ref={closeButtonRef} className="modal-close" type="button" aria-label="Đóng cửa sổ liên hệ" onClick={onClose}><Icon name="close" /></button></div>
         <div className="selected-plan"><Icon name="server" /><div><span>Gói đã chọn</span><strong>{plan.name} · {price}/{plan.period}</strong></div></div>
-        <p className="contact-modal-copy">Website hiện chưa hỗ trợ mua trực tiếp. Vui lòng nhắn tin qua Discord hoặc Facebook để được xác nhận đơn hàng và hướng dẫn thanh toán.</p>
+        <p className="contact-modal-copy">Website hiện chưa hỗ trợ mua trực tiếp. Vui lòng nhắn tin qua Discord, Facebook hoặc Zalo để được xác nhận đơn hàng và hướng dẫn thanh toán.</p>
         <label className="order-agreement"><input checked={agreed} type="checkbox" onChange={(event) => setAgreed(event.target.checked)} /><span>Tôi đã đọc và đồng ý với <Link href={site.legal.termsUrl} target="_blank">Điều khoản dịch vụ</Link>, <Link href={site.legal.warrantyUrl} target="_blank">Chính sách bảo hành và hoàn tiền</Link>.</span></label>
         <div className="contact-options">
           <ContactOption agreed={agreed} description="Trao đổi nhanh với quản trị viên" href={site.contact.discordUrl} icon="headphones" label="Nhắn qua Discord" />
           <ContactOption agreed={agreed} description="Gửi yêu cầu mua VPS" href={site.contact.facebookUrl} icon="user" label="Nhắn qua Facebook" />
+          <ContactOption agreed={agreed} description={site.contact.phone} href={`https://zalo.me/${zaloPhoneNumber}`} icon="phone" label="Nhắn qua Zalo" />
         </div>
         {!agreed ? <p className="agreement-hint">Chọn xác nhận để mở kênh đặt hàng.</p> : null}
         <div className="contact-details"><span>Hotline: {site.contact.phone}</span><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></div>
@@ -57,7 +59,7 @@ type ContactOptionProps = {
   agreed: boolean;
   description: string;
   href: string;
-  icon: "headphones" | "user";
+  icon: "headphones" | "phone" | "user";
   label: string;
 };
 
