@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { refreshRuntimeConfig } from "@/config/runtime";
 
-const ADMIN_EMAIL = "tranhuybao000@gmail.com";
+const ADMIN_EMAILS = ["tranhuybao000@gmail.com", "kienmc2112@gmail.com"];
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +17,7 @@ async function authorizeAdmin(request: Request) {
   const authClient = createClient(supabaseUrl, supabaseAnonKey, { auth: { autoRefreshToken: false, persistSession: false } });
   const { data, error } = await authClient.auth.getUser(accessToken);
   if (error || !data.user) return { response: NextResponse.json({ error: "Phiên đăng nhập không hợp lệ." }, { status: 401 }) };
-  if (data.user.email?.trim().toLowerCase() !== ADMIN_EMAIL) return { response: NextResponse.json({ error: "Tài khoản không có quyền admin." }, { status: 403 }) };
+  if (!ADMIN_EMAILS.includes(data.user.email?.trim().toLowerCase() ?? "")) return { response: NextResponse.json({ error: "Tài khoản không có quyền admin." }, { status: 403 }) };
 
   return { user: data.user };
 }
