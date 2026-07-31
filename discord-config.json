@@ -72,18 +72,18 @@
     { "id": "bruh-vps-2-8", "name": "DiabloNode VPS 2-8", "cpu": "2 vCPU", "ram": "8 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "239.000đ", "period": "tháng", "status": "Còn hàng" },
     { "id": "bruh-vps-4-8", "name": "DiabloNode VPS 4-8", "cpu": "4 vCPU", "ram": "8 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "299.000đ", "period": "tháng", "status": "Còn hàng", "popular": true },
     { "id": "bruh-vps-4-16", "name": "DiabloNode VPS 4-16", "cpu": "4 vCPU", "ram": "16 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "349.000đ", "period": "tháng", "status": "Còn hàng" },
-    { "id": "bruh-vps-8-16", "name": "DiabloNode VPS 8-16", "cpu": "8 vCPU", "ram": "16 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "599.000đ", "period": "tháng", "status": "Còn hàng", "popular": true },
-    { "id": "bruh-vps-16-32", "name": "DiabloNode VPS 16-32", "cpu": "16 vCPU", "ram": "32 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "80 GB NVMe", "price": "829.000đ", "period": "tháng", "status": "Hết hàng" }
+    { "id": "bruh-vps-8-16", "name": "DiabloNode VPS 8-16", "cpu": "8 vCPU", "ram": "16 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "100 GB NVMe", "price": "599.000đ", "period": "tháng", "status": "Còn hàng", "popular": true },
+    { "id": "bruh-vps-16-32", "name": "DiabloNode VPS 16-32", "cpu": "16 vCPU", "ram": "32 GB", "portSpeed": "Tối đa 1 Gbps", "storage": "120 GB NVMe", "price": "829.000đ", "period": "tháng", "status": "Hết hàng" }
   ],
   "promotions": {
     "bruh-vps-1-1": { "originalPrice": null, "salePrice": 59000 },
-    "bruh-vps-1-2": { "originalPrice": null, "salePrice": 79000 },
+    "bruh-vps-1-2": { "originalPrice": 99000, "salePrice": 79000 },
     "bruh-vps-2-2": { "originalPrice": 129000, "salePrice": 99000 },
     "bruh-vps-2-4": { "originalPrice": 179000, "salePrice": 119000 },
     "bruh-vps-2-8": { "originalPrice": 239000, "salePrice": 179000 },
     "bruh-vps-4-8": { "originalPrice": 299000, "salePrice": 239000 },
     "bruh-vps-4-16": { "originalPrice": 499000, "salePrice": 349000 },
-    "bruh-vps-8-16": { "originalPrice": 899000, "salePrice": 599000 },
-    "bruh-vps-16-32": { "originalPrice": 1239000, "salePrice": 829000 }
+    "bruh-vps-8-16": { "originalPrice": 899000, "salePrice": 489000 },
+    "bruh-vps-16-32": { "originalPrice": 1239000, "salePrice": 799000 }
   }
 }

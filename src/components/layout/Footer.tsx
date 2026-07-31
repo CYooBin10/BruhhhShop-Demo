@@ -47,7 +47,14 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="container footer-bottom"><span>© 2026 {site.name}. All rights reserved.</span></div>
+      <div className="container footer-bottom">
+        <span>© 2026 {site.name}. All rights reserved.</span>
+        <div className="footer-powered-by">
+          <span>Powered by</span>
+          <Image alt="2Tech Studio" height={48} src="/assets/image/logo-2tech.avif" unoptimized width={48} />
+          <strong>2Tech Studio</strong>
+        </div>
+      </div>
     </footer>
   );
 }

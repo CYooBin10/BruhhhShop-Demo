@@ -4,7 +4,7 @@ const useCases = [
   ["/assets/image/doing/mc.webp", "Server Minecraft Paper/Purpur", "Phù hợp server vừa phải, hiệu năng thực tế tùy plugin và map."],
   ["/assets/image/doing/world-wide-web.png", "Website và API", "Chạy website, backend hoặc API cần hoạt động liên tục."],
   ["/assets/image/doing/bot.png", "Bot Discord", "Duy trì bot online mà không phụ thuộc máy cá nhân."],
-  ["/assets/image/doing/mc.webp", "Ứng dụng chạy 24/7", "Triển khai dịch vụ nền và tác vụ dài hạn."],
+  ["/assets/image/doing/terminal.png", "Ứng dụng chạy 24/7", "Triển khai dịch vụ nền và tác vụ dài hạn."],
 ] as const;
 
 export function UseCases() {
