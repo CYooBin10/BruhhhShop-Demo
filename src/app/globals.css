@@ -166,7 +166,7 @@ html[data-theme="light"] .plan-top { border-bottom-color: #cbd5e1; background: #
 @media (min-width: 1051px) {
   html { zoom: .9; }
 }
-@media (min-width: 781px) {
+@media (min-width: 1051px) {
   .side-ads { position: fixed; z-index: 40; inset: 0; display: block; pointer-events: none; }
   .side-ads a { position: absolute; top: 50%; width: min(17vw, 34vh, 340px); aspect-ratio: 9 / 16; pointer-events: auto; transform: translateY(-50%); transition: filter .2s ease, transform .2s ease; }
   .side-ads .side-ad-left { left: clamp(12px, 1.25vw, 24px); }
@@ -174,9 +174,10 @@ html[data-theme="light"] .plan-top { border-bottom-color: #cbd5e1; background: #
   .side-ads a:hover { filter: brightness(1.08); transform: translateY(-50%) scale(1.02); }
   .side-ads a:focus-visible { border-radius: 24px; outline: 3px solid var(--cyan); outline-offset: 4px; }
   .side-ads img { width: 100%; height: 100%; object-fit: contain; }
+  .side-ads-phone { display: none; }
   .side-ads-close { display: none; }
 }
-@media (min-width: 781px) and (max-width: 1400px) {
+@media (min-width: 1051px) and (max-width: 1400px) {
   .side-ads { top: 119px; right: 0; bottom: auto; left: 0; height: 0; }
   .side-ads a { top: 0; width: clamp(58px, 15vw, 74px); transform: none; }
   .side-ads .side-ad-left { left: 18px; }
@@ -187,16 +188,16 @@ html[data-theme="light"] .plan-top { border-bottom-color: #cbd5e1; background: #
   .side-ads-close-right { right: 4px; }
   .side-ads-close:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
 }
-@media (max-width: 780px) {
-  .side-ads { position: fixed; z-index: 40; top: 119px; right: 0; left: 0; display: block; height: 0; pointer-events: none; }
-  .side-ads a { position: absolute; width: clamp(58px, 15vw, 74px); aspect-ratio: 9 / 16; pointer-events: auto; }
-  .side-ads .side-ad-left { left: 18px; }
-  .side-ads .side-ad-right { right: 4px; }
-  .side-ads a:focus-visible, .side-ads-close:focus-visible { border-radius: 10px; outline: 2px solid var(--cyan); outline-offset: 2px; }
-  .side-ads img { width: 100%; height: 100%; object-fit: contain; }
-  .side-ads-close { position: absolute; top: -10px; display: grid; width: 20px; height: 20px; place-items: center; padding: 0; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--surface-strong); color: var(--text); font-size: 16px; line-height: 1; pointer-events: auto; }
-  .side-ads-close-left { left: calc(8px + clamp(58px, 15vw, 74px)); }
-  .side-ads-close-right { right: 4px; }
+@media (max-width: 1050px) {
+  .side-ads { position: fixed; z-index: 40; top: 119px; right: 4px; display: block; width: 100px; max-height: calc(100vh - 135px); overflow-y: auto; pointer-events: none; scrollbar-width: none; }
+  .side-ads::-webkit-scrollbar { display: none; }
+  .side-ads-desktop { display: none; }
+  .side-ads-phone { position: relative; display: block; padding-top: 26px; }
+  .side-ads-phone-close { position: absolute; z-index: 1; top: 0; right: 0; display: grid; width: 20px; height: 20px; place-items: center; padding: 0; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--surface-strong); color: var(--text); font-size: 16px; line-height: 1; pointer-events: auto; }
+  .side-ads-phone-list { display: grid; gap: 8px; }
+  .side-ads-phone-list a { display: block; width: 100%; pointer-events: auto; }
+  .side-ads-phone-list a:focus-visible, .side-ads-phone-close:focus-visible { border-radius: 10px; outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .side-ads-phone-list img { width: 100%; height: auto; object-fit: contain; }
 }
 @media (max-width: 1050px) {
   .desktop-nav { gap: 18px; }.desktop-nav a { font-size: 12px; }.transparency-layout { gap: 55px; }.policy-layout { gap: 50px; }.pricing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.pricing-card { padding: 24px; }.hero-grid { grid-template-columns: minmax(0, .9fr) minmax(400px, 1fr); gap: 30px; }.hero h1 { font-size: clamp(44px, 5vw, 62px); }.preview-card-side { right: -1%; }.advantages-layout, .faq-layout { gap: 60px; }.commitment-card { grid-template-columns: 64px minmax(0, 1fr); }.commitment-aside { grid-column: 2; padding: 18px 0 0; border-top: 1px solid var(--line-strong); border-left: 0; }

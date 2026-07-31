@@ -1,21 +1,32 @@
-"use client";
-
 import Image from "next/image";
-import { useState } from "react";
+import { readdir } from "node:fs/promises";
+import { PhoneAds } from "@/components/PhoneAds";
+import { join } from "node:path";
 
 const adUrl = "https://discord.gg/dur2JmkYG";
-const adImage = "/assets/image/ads/quang_cao_shop_nitro.png";
+const desktopAdImage = "/assets/image/ads/quang_cao_shop_nitro.png";
+const phoneAdDirectory = join(process.cwd(), "public", "assets", "image", "ads", "phone");
+const imageFilePattern = /\.(avif|gif|jpe?g|png|webp)$/i;
 
-export function SideAds() {
-  const [isLeftVisible, setIsLeftVisible] = useState(true);
-  const [isRightVisible, setIsRightVisible] = useState(true);
+async function getPhoneAdImages() {
+  try {
+    const filenames = await readdir(phoneAdDirectory);
+    return filenames.filter((filename) => imageFilePattern.test(filename)).sort().map((filename) => `/assets/image/ads/phone/${encodeURIComponent(filename)}`);
+  } catch {
+    return [];
+  }
+}
 
-  if (!isLeftVisible && !isRightVisible) return null;
+export async function SideAds() {
+  const phoneAdImages = await getPhoneAdImages();
 
   return (
     <aside className="side-ads" aria-label="Quảng cáo">
-      {isLeftVisible && <><a className="side-ad-left" href={adUrl} target="_blank" rel="noreferrer"><Image alt="Nâng cấp Discord Nitro và Server Boost giá siêu rẻ" height={2048} sizes="(min-width: 781px) 340px, 15vw" src={adImage} width={1152} /></a><button className="side-ads-close side-ads-close-left" type="button" aria-label="Đóng quảng cáo bên trái" onClick={() => setIsLeftVisible(false)}>×</button></>}
-      {isRightVisible && <><a className="side-ad-right" href={adUrl} target="_blank" rel="noreferrer"><Image alt="Nâng cấp Discord Nitro và Server Boost giá siêu rẻ" height={2048} sizes="(min-width: 781px) 340px, 15vw" src={adImage} width={1152} /></a><button className="side-ads-close side-ads-close-right" type="button" aria-label="Đóng quảng cáo bên phải" onClick={() => setIsRightVisible(false)}>×</button></>}
+      <div className="side-ads-desktop">
+        <a className="side-ad-left" href={adUrl} target="_blank" rel="noreferrer"><Image alt="Nâng cấp Discord Nitro và Server Boost giá siêu rẻ" height={2048} sizes="(min-width: 781px) 340px" src={desktopAdImage} width={1152} /></a>
+        <a className="side-ad-right" href={adUrl} target="_blank" rel="noreferrer"><Image alt="Nâng cấp Discord Nitro và Server Boost giá siêu rẻ" height={2048} sizes="(min-width: 781px) 340px" src={desktopAdImage} width={1152} /></a>
+      </div>
+      <PhoneAds adUrl={adUrl} images={phoneAdImages} />
     </aside>
   );
 }
