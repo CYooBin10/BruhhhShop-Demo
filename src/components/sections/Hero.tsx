@@ -7,6 +7,7 @@ export async function Hero() {
     ["cpu", business.infrastructure.cpuModel],
     ["server", "NVMe"],
     ["globe", `Cổng mạng tối đa ${business.infrastructure.portSpeed}`],
+    ["shield", business.infrastructure.ddosProtection],
     ["headphones", "Hỗ trợ kỹ thuật"],
   ] as const;
   return (

@@ -51,7 +51,7 @@
       "portSpeed": "1 Gbps",
       "monthlyTraffic": "Chưa cập nhật",
       "datacenter": "Chưa cập nhật",
-      "ddosProtection": "AntiDDoS Pro",
+      "ddosProtection": "Anti-DDoS cơ bản",
       "supportedOperatingSystems": "Chưa cập nhật",
       "backupPolicy": "Chưa cập nhật",
       "fairUsePolicy": "Chưa cập nhật"
@@ -78,7 +78,7 @@
   "promotions": {
     "bruh-vps-1-1": { "originalPrice": null, "salePrice": 59000 },
     "bruh-vps-1-2": { "originalPrice": null, "salePrice": 79000 },
-    "bruh-vps-2-2": { "originalPrice": null, "salePrice": 99000 },
+    "bruh-vps-2-2": { "originalPrice": 129000, "salePrice": 99000 },
     "bruh-vps-2-4": { "originalPrice": 179000, "salePrice": 119000 },
     "bruh-vps-2-8": { "originalPrice": 239000, "salePrice": 179000 },
     "bruh-vps-4-8": { "originalPrice": 299000, "salePrice": 239000 },
