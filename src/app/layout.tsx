@@ -4,6 +4,8 @@ import "./globals.css";
 import { RuntimeConfigProvider } from "@/components/RuntimeConfigProvider";
 import { getRuntimeConfig } from "@/config/runtime";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const { site } = await getRuntimeConfig();
   return { metadataBase: new URL(site.url), title: site.title, description: site.description, openGraph: { title: site.title, description: site.description, type: "website", locale: "vi_VN", siteName: site.name }, icons: { icon: "/assets/image/logo.png?v=2", apple: "/assets/image/logo.png?v=2" }, robots: { index: true, follow: true } };
