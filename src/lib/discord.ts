@@ -2,6 +2,7 @@ import "server-only";
 
 const DISCORD_API = "https://discord.com/api/v10";
 const DISCORD_CHANNEL_ID = "1532223030581924021";
+const PURCHASE_LOG_CHANNEL_ID = "1532893713062170815";
 const DISCORD_CDN_HOSTS = new Set(["cdn.discordapp.com", "media.discordapp.net"]);
 
 export type LegitTickerItem = {
@@ -27,6 +28,41 @@ function safeImageUrl(value: unknown) {
 
 function isImage(filename: string, contentType: string) {
   return contentType.startsWith("image/") || /\.(avif|gif|jpe?g|png|webp)$/i.test(filename);
+}
+
+export type PurchaseLogItem = {
+  id: string;
+  content: string;
+};
+
+async function getChannelMessages(channelId: string, limit: number, revalidate = 60) {
+  const token = process.env.DISCORD_BOT_TOKEN;
+  if (!token) return [];
+
+  try {
+    const response = await fetch(`${DISCORD_API}/channels/${channelId}/messages?limit=${Math.min(Math.max(limit, 1), 24)}`, {
+      headers: { Authorization: `Bot ${token}`, Accept: "application/json" },
+      next: { revalidate },
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!response.ok) return [];
+
+    const messages: unknown = await response.json();
+    return Array.isArray(messages) ? messages : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogItem[]> {
+  const messages = await getChannelMessages(PURCHASE_LOG_CHANNEL_ID, limit, 0);
+  return messages.flatMap((message): PurchaseLogItem[] => {
+    if (!message || typeof message !== "object") return [];
+    const raw = message as { id?: unknown; content?: unknown; embeds?: Array<{ title?: unknown; description?: unknown }> };
+    const id = cleanText(raw.id, 100);
+    const content = cleanText(raw.content, 240) || cleanText(raw.embeds?.find((embed) => embed.description)?.description, 240) || cleanText(raw.embeds?.find((embed) => embed.title)?.title, 240);
+    return id && content ? [{ id, content }] : [];
+  });
 }
 
 export async function getLegitTicker(limit = 16): Promise<LegitTickerItem[]> {
