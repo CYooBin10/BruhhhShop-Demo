@@ -35,14 +35,15 @@ export type PurchaseLogItem = {
   content: string;
 };
 
-async function getChannelMessages(channelId: string, limit: number, revalidate = 60) {
-  const token = process.env.DISCORD_BOT_TOKEN;
+async function getChannelMessages(channelId: string, limit: number, cacheSeconds = 60) {
+  const token = process.env.DISCORD_BOT_TOKEN ?? process.env.DISCORD_CONFIG_BOT_TOKEN;
   if (!token) return [];
 
   try {
+    const cacheOptions = cacheSeconds === 0 ? { cache: "no-store" as const } : { next: { revalidate: cacheSeconds } };
     const response = await fetch(`${DISCORD_API}/channels/${channelId}/messages?limit=${Math.min(Math.max(limit, 1), 24)}`, {
       headers: { Authorization: `Bot ${token}`, Accept: "application/json" },
-      next: { revalidate },
+      ...cacheOptions,
       signal: AbortSignal.timeout(10000),
     });
     if (!response.ok) return [];
@@ -66,7 +67,7 @@ export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogItem[]> {
 }
 
 export async function getLegitTicker(limit = 16): Promise<LegitTickerItem[]> {
-  const token = process.env.DISCORD_BOT_TOKEN;
+  const token = process.env.DISCORD_BOT_TOKEN ?? process.env.DISCORD_CONFIG_BOT_TOKEN;
   if (!token) return [];
 
   try {
