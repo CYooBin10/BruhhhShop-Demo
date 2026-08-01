@@ -3,6 +3,7 @@ import "server-only";
 const DISCORD_API = "https://discord.com/api/v10";
 const DISCORD_CHANNEL_ID = "1532223030581924021";
 const PURCHASE_LOG_CHANNEL_ID = "1532893713062170815";
+const PURCHASE_LOG_CACHE_SECONDS = 5;
 const DISCORD_CDN_HOSTS = new Set(["cdn.discordapp.com", "media.discordapp.net"]);
 
 export type LegitTickerItem = {
@@ -49,7 +50,7 @@ export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogsResult> {
   try {
     const response = await fetch(`${DISCORD_API}/channels/${PURCHASE_LOG_CHANNEL_ID}/messages?limit=${Math.min(Math.max(limit, 1), 24)}`, {
       headers: { Authorization: `Bot ${token}`, Accept: "application/json" },
-      cache: "no-store",
+      next: { revalidate: PURCHASE_LOG_CACHE_SECONDS },
       signal: AbortSignal.timeout(10000),
     });
     if (response.status === 429) {

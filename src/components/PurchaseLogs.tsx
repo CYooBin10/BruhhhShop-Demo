@@ -10,6 +10,7 @@ type PurchaseLog = {
 type PurchaseLogsResponse = {
   items?: PurchaseLog[];
   error?: "configuration" | "rate_limited" | "upstream" | "timeout";
+  retryAfter?: number;
 };
 
 const errorMessages = {
@@ -26,6 +27,8 @@ export function PurchaseLogs() {
   useEffect(() => {
     const controller = new AbortController();
     let isLoading = false;
+    let timer: number;
+    const scheduleNextLoad = (delay = 1000) => { timer = window.setTimeout(() => void loadPurchaseLogs(), delay); };
     const loadPurchaseLogs = async () => {
       if (isLoading) return;
       isLoading = true;
@@ -34,15 +37,16 @@ export function PurchaseLogs() {
         const data: PurchaseLogsResponse = await response.json();
         setItems(data.items ?? []);
         setError(data.error);
+        scheduleNextLoad(data.error === "rate_limited" ? Math.max(data.retryAfter ?? 5, 1) * 1000 : 1000);
       } catch {
         setError("upstream");
+        scheduleNextLoad(5000);
       } finally {
         isLoading = false;
       }
     };
     void loadPurchaseLogs();
-    const timer = window.setInterval(() => void loadPurchaseLogs(), 1000);
-    return () => { controller.abort(); window.clearInterval(timer); };
+    return () => { controller.abort(); window.clearTimeout(timer); };
   }, []);
 
   return <aside aria-label="Đơn hàng gần đây" className="purchase-log-panel"><div className="purchase-log-list">{items.length > 0 ? items.map((item) => <p key={item.id}>{item.content}</p>) : <p className="purchase-log-empty">{error ? errorMessages[error] : "Chưa có log mua hàng mới."}</p>}</div></aside>;
