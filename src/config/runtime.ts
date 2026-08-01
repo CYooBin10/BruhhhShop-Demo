@@ -170,7 +170,8 @@ function parsePlans(value: unknown): Plan[] | null {
     const period = stringValue(item.period, 40);
     const status = stringValue(item.status, 40);
     const popular = typeof item.popular === "boolean" ? item.popular : undefined;
-    return id && name && cpu && ram && portSpeed && storage && price && period && status && PLAN_STATUSES.has(status) ? { id, name, cpu, ram, portSpeed, storage, price, period, status, ...(popular === undefined ? {} : { popular }) } : null;
+    const popularLabel = item.popularLabel === undefined ? undefined : stringValue(item.popularLabel, 80);
+    return id && name && cpu && ram && portSpeed && storage && price && period && status && PLAN_STATUSES.has(status) && (item.popularLabel === undefined || popularLabel) ? { id, name, cpu, ram, portSpeed, storage, price, period, status, ...(popular === undefined ? {} : { popular }), ...(popularLabel ? { popularLabel } : {}) } : null;
   });
   return plans.some((plan) => plan === null) || new Set(plans.map((plan) => plan?.id)).size !== plans.length ? null : plans as Plan[];
 }

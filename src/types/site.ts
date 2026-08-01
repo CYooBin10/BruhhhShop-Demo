@@ -29,6 +29,7 @@ export type Plan = {
   period: string;
   status: string;
   popular?: boolean;
+  popularLabel?: string;
 };
 
 export type PublicSiteConfig = {
