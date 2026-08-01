@@ -9,12 +9,15 @@ type PurchaseLog = {
 
 type PurchaseLogsResponse = {
   items?: PurchaseLog[];
-  error?: "configuration" | "rate_limited" | "upstream" | "timeout";
+  error?: "configuration" | "unauthorized" | "forbidden" | "not_found" | "rate_limited" | "upstream" | "timeout";
   retryAfter?: number;
 };
 
 const errorMessages = {
   configuration: "Bot chưa có token để đọc log mua hàng.",
+  unauthorized: "Discord từ chối Bot token. Kiểm tra token trong biến môi trường.",
+  forbidden: "Bot chưa có quyền đọc channel log mua hàng.",
+  not_found: "Không tìm thấy channel log mua hàng. Kiểm tra lại ID channel.",
   rate_limited: "Discord đang giới hạn truy vấn log. Thử lại sau ít giây.",
   upstream: "Không đọc được log mua hàng từ Discord.",
   timeout: "Discord phản hồi quá lâu. Đang thử lại.",

@@ -39,7 +39,7 @@ export type PurchaseLogItem = {
 export type PurchaseLogsResult = {
   status: number;
   items: PurchaseLogItem[];
-  error?: "configuration" | "rate_limited" | "upstream" | "timeout";
+  error?: "configuration" | "unauthorized" | "forbidden" | "not_found" | "rate_limited" | "upstream" | "timeout";
   retryAfter?: number;
 };
 
@@ -75,6 +75,9 @@ async function fetchPurchaseLogs(limit: number): Promise<PurchaseLogsResult> {
       cache: "no-store",
       signal: AbortSignal.timeout(10000),
     });
+    if (response.status === 401) return { status: 503, items: [], error: "unauthorized" };
+    if (response.status === 403) return { status: 503, items: [], error: "forbidden" };
+    if (response.status === 404) return { status: 503, items: [], error: "not_found" };
     if (response.status === 429) {
       const retryAfter = Number(response.headers.get("retry-after"));
       return { status: 429, items: [], error: "rate_limited", retryAfter: Number.isFinite(retryAfter) ? Math.min(Math.max(Math.ceil(retryAfter), 1), 60) : 5 };
