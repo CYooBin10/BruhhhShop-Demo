@@ -3,7 +3,7 @@ import "server-only";
 const DISCORD_API = "https://discord.com/api/v10";
 const DISCORD_CHANNEL_ID = "1532223030581924021";
 const PURCHASE_LOG_CHANNEL_ID = "1532893713062170815";
-const PURCHASE_LOG_CACHE_SECONDS = 5;
+const PURCHASE_LOG_CACHE_MS = 5000;
 const DISCORD_CDN_HOSTS = new Set(["cdn.discordapp.com", "media.discordapp.net"]);
 
 export type LegitTickerItem = {
@@ -43,14 +43,36 @@ export type PurchaseLogsResult = {
   retryAfter?: number;
 };
 
+type PurchaseLogsCache = {
+  expiresAt: number;
+  result: PurchaseLogsResult;
+};
+
+let purchaseLogsCache: PurchaseLogsCache | undefined;
+let pendingPurchaseLogs: Promise<PurchaseLogsResult> | undefined;
+
 export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogsResult> {
+  if (purchaseLogsCache && purchaseLogsCache.expiresAt > Date.now()) return purchaseLogsCache.result;
+  if (pendingPurchaseLogs) return pendingPurchaseLogs;
+  pendingPurchaseLogs = fetchPurchaseLogs(limit);
+  try {
+    const result = await pendingPurchaseLogs;
+    const cacheMs = result.error === "rate_limited" ? Math.max(result.retryAfter ?? 5, 1) * 1000 : result.error ? 15000 : PURCHASE_LOG_CACHE_MS;
+    purchaseLogsCache = { result, expiresAt: Date.now() + cacheMs };
+    return result;
+  } finally {
+    pendingPurchaseLogs = undefined;
+  }
+}
+
+async function fetchPurchaseLogs(limit: number): Promise<PurchaseLogsResult> {
   const token = process.env.DISCORD_BOT_TOKEN ?? process.env.DISCORD_CONFIG_BOT_TOKEN;
   if (!token) return { status: 503, items: [], error: "configuration" };
 
   try {
     const response = await fetch(`${DISCORD_API}/channels/${PURCHASE_LOG_CHANNEL_ID}/messages?limit=${Math.min(Math.max(limit, 1), 24)}`, {
       headers: { Authorization: `Bot ${token}`, Accept: "application/json" },
-      next: { revalidate: PURCHASE_LOG_CACHE_SECONDS },
+      cache: "no-store",
       signal: AbortSignal.timeout(10000),
     });
     if (response.status === 429) {
