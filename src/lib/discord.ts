@@ -66,7 +66,7 @@ export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogsResult> {
 }
 
 async function fetchPurchaseLogs(limit: number): Promise<PurchaseLogsResult> {
-  const token = process.env.DISCORD_BOT_TOKEN ?? process.env.DISCORD_CONFIG_BOT_TOKEN;
+  const token = process.env.DISCORD_CONFIG_BOT_TOKEN ?? process.env.DISCORD_BOT_TOKEN;
   if (!token) return { status: 503, items: [], error: "configuration" };
 
   try {
