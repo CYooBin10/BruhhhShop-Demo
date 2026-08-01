@@ -2,6 +2,7 @@ import "server-only";
 
 const DISCORD_API = "https://discord.com/api/v10";
 const DISCORD_CHANNEL_ID = "1532223030581924021";
+const CONTACT_CHANNEL_ID = "1533121620011647016";
 const PURCHASE_LOG_CHANNEL_ID = "1532893713062170815";
 const PURCHASE_LOG_CACHE_MS = 5000;
 const DISCORD_CDN_HOSTS = new Set(["cdn.discordapp.com", "media.discordapp.net"]);
@@ -129,5 +130,53 @@ export async function getLegitTicker(limit = 16): Promise<LegitTickerItem[]> {
     });
   } catch {
     return [];
+  }
+}
+
+export type ContactRequest = {
+  senderName: string;
+  senderEmail: string;
+  senderId: string;
+  name: string;
+  requestType: string;
+  purpose: string;
+  plan: string;
+  duration: string;
+  message: string;
+};
+
+export type ContactSendResult = {
+  ok: boolean;
+  error?: "configuration" | "rate_limited" | "unauthorized" | "forbidden" | "not_found" | "upstream";
+};
+
+export async function sendContactNotification(request: ContactRequest): Promise<ContactSendResult> {
+  const token = process.env.DISCORD_CONFIG_BOT_TOKEN ?? process.env.DISCORD_BOT_TOKEN;
+  if (!token) return { ok: false, error: "configuration" };
+
+  const fields = [
+    { name: "👤 Người gửi", value: `${request.senderName} — ${request.senderEmail}`, inline: false },
+    { name: "📝 Họ tên", value: request.name, inline: true },
+    { name: "🖥️ Cấu hình", value: request.plan, inline: true },
+    { name: "🎯 Mục đích", value: request.purpose, inline: true },
+    { name: "⏳ Thời gian", value: request.duration, inline: true },
+    { name: "📋 Mô tả chi tiết", value: request.message.slice(0, 1024) || "Không có mô tả", inline: false },
+  ];
+
+  try {
+    const response = await fetch(`${DISCORD_API}/channels/${CONTACT_CHANNEL_ID}/messages`, {
+      method: "POST",
+      headers: { Authorization: `Bot ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ embeds: [{ title: `📩 Yêu cầu: ${request.requestType}`, color: 0x38bdf8, fields, footer: { text: `Mã tài khoản: ${request.senderId}` }, timestamp: new Date().toISOString() }] }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(10000),
+    });
+    if (response.status === 401 || response.status === 403) return { ok: false, error: response.status === 401 ? "unauthorized" : "forbidden" };
+    if (response.status === 404) return { ok: false, error: "not_found" };
+    if (response.status === 429) return { ok: false, error: "rate_limited" };
+    if (!response.ok) return { ok: false, error: "upstream" };
+    return { ok: true };
+  } catch {
+    return { ok: false, error: "upstream" };
   }
 }

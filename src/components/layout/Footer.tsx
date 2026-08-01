@@ -40,7 +40,7 @@ export function Footer() {
             <span><Icon name="clock" /> Giờ hỗ trợ: {business.supportHours}</span>
           </div>
         </div>
-        <div>
+        <div className="footer-policy">
           <h2 className="footer-title">Chính sách</h2>
           <div className="footer-links">
             {legalLinks.map((link) => <Link key={link.label} href={link.href}>{link.label}</Link>)}

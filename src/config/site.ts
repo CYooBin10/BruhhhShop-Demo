@@ -27,5 +27,5 @@ export const navigation = [
   { label: "Trang chủ", href: "#trang-chu" },
   { label: "Bảng giá", href: "#bang-gia" },
   { label: "Chính sách", href: "/chinh-sach" },
-  { label: "Liên hệ", href: "#lien-he" },
+  { label: "Liên hệ", href: "/lien-he" },
 ] as const;

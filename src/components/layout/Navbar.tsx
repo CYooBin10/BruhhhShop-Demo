@@ -71,8 +71,9 @@ export function Navbar({ onAuth }: NavbarProps) {
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
+  const navigationItems = navigation.filter((item) => item.href !== "#bang-gia").map((item) => item.href === "#lien-he" ? { ...item, href: "/lien-he" } : item).flatMap((item, index) => index === 1 ? [{ label: "VPS", href: "/vps" }, item] : [item]);
   const getNavigationHref = (href: string) => pathname === "/" || !href.startsWith("#") ? href : `/${href}`;
-  const isNavigationActive = (href: string) => href.startsWith("#") ? pathname === "/" && activeSection === href : pathname.startsWith(href);
+  const isNavigationActive = (href: string) => href === "/vps" ? pathname === "/vps" : href.startsWith("#") ? pathname === "/" && activeSection === href : pathname.startsWith(href);
   const signOut = async () => {
     const { supabase } = await import("@/lib/supabase");
     if (!supabase) return;
@@ -85,7 +86,7 @@ export function Navbar({ onAuth }: NavbarProps) {
       <div className="container nav-shell">
         <Logo />
         <nav className={`desktop-nav ${menuOpen ? "is-open" : ""}`} aria-label="Điều hướng chính">
-          {navigation.map((item) => (
+          {navigationItems.map((item) => (
             <span className="nav-item-with-notice" key={item.href}><a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} onClick={closeMenu}>{item.label}</a>{item.label === "Liên hệ" ? <NotificationBell /> : null}</span>
           ))}
         </nav>
@@ -96,7 +97,7 @@ export function Navbar({ onAuth }: NavbarProps) {
         </div>
       </div>
       <div id="main-navigation" className={`mobile-nav ${menuOpen ? "is-open" : ""}`}>
-        {navigation.map((item) => <a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</a>)}
+        {navigationItems.map((item) => <a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</a>)}
         {user ? <UserAccount username={user.user_metadata.username || "Tài khoản"} email={user.email ?? ""} mobile onSignOut={() => { closeMenu(); void signOut(); }} /> : <div className="mobile-auth-actions"><button className="button button-ghost" type="button" onClick={() => { closeMenu(); onAuth("login"); }}>Đăng nhập</button><button className="button button-primary" type="button" onClick={() => { closeMenu(); onAuth("register"); }}>Đăng ký</button></div>}
       </div>
     </header>

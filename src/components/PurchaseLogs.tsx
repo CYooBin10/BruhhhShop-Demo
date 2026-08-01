@@ -31,7 +31,7 @@ export function PurchaseLogs() {
     const controller = new AbortController();
     let isLoading = false;
     let timer: number;
-    const scheduleNextLoad = (delay = 1000) => { timer = window.setTimeout(() => void loadPurchaseLogs(), delay); };
+    const scheduleNextLoad = (delay = 10000) => { timer = window.setTimeout(() => void loadPurchaseLogs(), delay); };
     const loadPurchaseLogs = async () => {
       if (isLoading) return;
       isLoading = true;
@@ -40,7 +40,7 @@ export function PurchaseLogs() {
         const data: PurchaseLogsResponse = await response.json();
         setItems([...(data.items ?? [])].reverse());
         setError(data.error);
-        scheduleNextLoad(data.error === "rate_limited" ? Math.max(data.retryAfter ?? 5, 1) * 1000 : 1000);
+        scheduleNextLoad(data.error === "rate_limited" ? Math.max(data.retryAfter ?? 5, 1) * 1000 : 10000);
       } catch {
         setError("upstream");
         scheduleNextLoad(5000);
