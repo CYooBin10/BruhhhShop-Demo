@@ -5,5 +5,6 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export async function GET() {
-  return NextResponse.json({ items: await getPurchaseLogs() }, { headers: { "Cache-Control": "no-store, no-cache, must-revalidate", Pragma: "no-cache", Expires: "0" } });
+  const result = await getPurchaseLogs();
+  return NextResponse.json({ items: result.items, error: result.error, retryAfter: result.retryAfter }, { status: result.status, headers: { "Cache-Control": "no-store, no-cache, must-revalidate", Pragma: "no-cache", Expires: "0" } });
 }

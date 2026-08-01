@@ -35,35 +35,42 @@ export type PurchaseLogItem = {
   content: string;
 };
 
-async function getChannelMessages(channelId: string, limit: number, cacheSeconds = 60) {
+export type PurchaseLogsResult = {
+  status: number;
+  items: PurchaseLogItem[];
+  error?: "configuration" | "rate_limited" | "upstream" | "timeout";
+  retryAfter?: number;
+};
+
+export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogsResult> {
   const token = process.env.DISCORD_BOT_TOKEN ?? process.env.DISCORD_CONFIG_BOT_TOKEN;
-  if (!token) return [];
+  if (!token) return { status: 503, items: [], error: "configuration" };
 
   try {
-    const cacheOptions = cacheSeconds === 0 ? { cache: "no-store" as const } : { next: { revalidate: cacheSeconds } };
-    const response = await fetch(`${DISCORD_API}/channels/${channelId}/messages?limit=${Math.min(Math.max(limit, 1), 24)}`, {
+    const response = await fetch(`${DISCORD_API}/channels/${PURCHASE_LOG_CHANNEL_ID}/messages?limit=${Math.min(Math.max(limit, 1), 24)}`, {
       headers: { Authorization: `Bot ${token}`, Accept: "application/json" },
-      ...cacheOptions,
+      cache: "no-store",
       signal: AbortSignal.timeout(10000),
     });
-    if (!response.ok) return [];
+    if (response.status === 429) {
+      const retryAfter = Number(response.headers.get("retry-after"));
+      return { status: 429, items: [], error: "rate_limited", retryAfter: Number.isFinite(retryAfter) ? Math.min(Math.max(Math.ceil(retryAfter), 1), 60) : 5 };
+    }
+    if (!response.ok) return { status: response.status >= 500 ? 502 : 503, items: [], error: "upstream" };
 
     const messages: unknown = await response.json();
-    return Array.isArray(messages) ? messages : [];
-  } catch {
-    return [];
+    if (!Array.isArray(messages)) return { status: 502, items: [], error: "upstream" };
+    const items = messages.flatMap((message): PurchaseLogItem[] => {
+      if (!message || typeof message !== "object") return [];
+      const raw = message as { id?: unknown; content?: unknown; embeds?: Array<{ title?: unknown; description?: unknown }> };
+      const id = cleanText(raw.id, 100);
+      const content = cleanText(raw.content, 240) || cleanText(raw.embeds?.find((embed) => embed.description)?.description, 240) || cleanText(raw.embeds?.find((embed) => embed.title)?.title, 240);
+      return id && content ? [{ id, content }] : [];
+    });
+    return { status: 200, items };
+  } catch (error) {
+    return { status: error instanceof DOMException && error.name === "TimeoutError" ? 504 : 502, items: [], error: error instanceof DOMException && error.name === "TimeoutError" ? "timeout" : "upstream" };
   }
-}
-
-export async function getPurchaseLogs(limit = 6): Promise<PurchaseLogItem[]> {
-  const messages = await getChannelMessages(PURCHASE_LOG_CHANNEL_ID, limit, 0);
-  return messages.flatMap((message): PurchaseLogItem[] => {
-    if (!message || typeof message !== "object") return [];
-    const raw = message as { id?: unknown; content?: unknown; embeds?: Array<{ title?: unknown; description?: unknown }> };
-    const id = cleanText(raw.id, 100);
-    const content = cleanText(raw.content, 240) || cleanText(raw.embeds?.find((embed) => embed.description)?.description, 240) || cleanText(raw.embeds?.find((embed) => embed.title)?.title, 240);
-    return id && content ? [{ id, content }] : [];
-  });
 }
 
 export async function getLegitTicker(limit = 16): Promise<LegitTickerItem[]> {
