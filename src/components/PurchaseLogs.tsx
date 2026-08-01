@@ -38,7 +38,7 @@ export function PurchaseLogs() {
       try {
         const response = await fetch("/api/purchase-logs", { signal: controller.signal, cache: "no-store" });
         const data: PurchaseLogsResponse = await response.json();
-        setItems(data.items ?? []);
+        setItems([...(data.items ?? [])].reverse());
         setError(data.error);
         scheduleNextLoad(data.error === "rate_limited" ? Math.max(data.retryAfter ?? 5, 1) * 1000 : 1000);
       } catch {
@@ -52,5 +52,5 @@ export function PurchaseLogs() {
     return () => { controller.abort(); window.clearTimeout(timer); };
   }, []);
 
-  return <aside aria-label="Đơn hàng gần đây" className="purchase-log-panel"><div className="purchase-log-list">{items.length > 0 ? items.map((item) => <p key={item.id}>{item.content}</p>) : <p className="purchase-log-empty">{error ? errorMessages[error] : "Chưa có log mua hàng mới."}</p>}</div></aside>;
+  return <aside aria-label="Đơn hàng gần đây" className="purchase-log-panel"><div className="purchase-log-list">{items.length > 0 ? items.map((item, index) => <p key={item.id}><span>{String(index + 1).padStart(2, "0")}</span>{item.content}</p>) : <p className="purchase-log-empty">{error ? errorMessages[error] : "Chưa có log mua hàng mới."}</p>}</div></aside>;
 }

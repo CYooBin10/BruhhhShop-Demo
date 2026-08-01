@@ -17,6 +17,7 @@ const CONFIG_CDN_HOSTS = new Set(["cdn.discordapp.com", "media.discordapp.net"])
 const POLICY_SLUGS = new Set<string>(policyLinks.map(({ slug }) => slug));
 const PLAN_STATUSES = new Set(["Còn hàng", "Hết hàng"]);
 const RUNTIME_CONFIG_CACHE_TAG = "discord-runtime-config";
+const RUNTIME_CONFIG_REFRESH_SECONDS = 5;
 
 const fallbackConfig: RuntimeConfig = {
   site: {
@@ -214,7 +215,7 @@ function configFailure(code: string) {
 
 async function fetchRemoteConfigWithToken(token: string, force = false): Promise<{ config: RuntimeConfig | null; error: string | null }> {
   try {
-    const messagesResponse = await fetch(`${DISCORD_API}/channels/${CONFIG_CHANNEL_ID}/messages?limit=100`, { headers: { Authorization: `Bot ${token}`, Accept: "application/json" }, ...(force ? { cache: "no-store" as const } : { next: { revalidate: 60, tags: [RUNTIME_CONFIG_CACHE_TAG] } }), signal: AbortSignal.timeout(10000) });
+    const messagesResponse = await fetch(`${DISCORD_API}/channels/${CONFIG_CHANNEL_ID}/messages?limit=100`, { headers: { Authorization: `Bot ${token}`, Accept: "application/json" }, ...(force ? { cache: "no-store" as const } : { next: { revalidate: RUNTIME_CONFIG_REFRESH_SECONDS, tags: [RUNTIME_CONFIG_CACHE_TAG] } }), signal: AbortSignal.timeout(10000) });
     if (!messagesResponse.ok) return configFailure(`DISCORD_MESSAGES_HTTP_${messagesResponse.status}`);
     const messages: unknown = await messagesResponse.json();
     if (!Array.isArray(messages)) return configFailure("DISCORD_MESSAGES_INVALID");
@@ -228,7 +229,7 @@ async function fetchRemoteConfigWithToken(token: string, force = false): Promise
 
     const attachmentUrl = message.attachments.map(isConfigAttachment).find((url): url is string => url !== null);
     if (!attachmentUrl) return configFailure("CONFIG_ATTACHMENT_URL_OR_HOST_INVALID");
-    const configResponse = await fetch(attachmentUrl, { ...(force ? { cache: "no-store" as const } : { next: { revalidate: 60, tags: [RUNTIME_CONFIG_CACHE_TAG] } }), signal: AbortSignal.timeout(10000) });
+    const configResponse = await fetch(attachmentUrl, { ...(force ? { cache: "no-store" as const } : { next: { revalidate: RUNTIME_CONFIG_REFRESH_SECONDS, tags: [RUNTIME_CONFIG_CACHE_TAG] } }), signal: AbortSignal.timeout(10000) });
     if (!configResponse.ok || !CONFIG_CDN_HOSTS.has(new URL(configResponse.url).hostname)) return configFailure(`CONFIG_ATTACHMENT_HTTP_${configResponse.status}`);
     const contentLength = Number(configResponse.headers.get("content-length"));
     if (Number.isFinite(contentLength) && contentLength > CONFIG_MAX_BYTES) return configFailure("CONFIG_ATTACHMENT_TOO_LARGE");
@@ -254,10 +255,14 @@ async function fetchRemoteConfig(force = false): Promise<{ config: RuntimeConfig
   return fetchRemoteConfigWithToken(token, force);
 }
 
-const getCachedRuntimeConfig = unstable_cache(async (): Promise<RuntimeConfig> => (await fetchRemoteConfig()).config ?? fallbackConfig, [RUNTIME_CONFIG_CACHE_TAG], { revalidate: 60, tags: [RUNTIME_CONFIG_CACHE_TAG] });
+const getCachedRemoteConfig = unstable_cache(fetchRemoteConfig, [RUNTIME_CONFIG_CACHE_TAG], { revalidate: RUNTIME_CONFIG_REFRESH_SECONDS, tags: [RUNTIME_CONFIG_CACHE_TAG] });
 
 export async function getRuntimeConfig() {
-  return getCachedRuntimeConfig();
+  return (await getCachedRemoteConfig()).config ?? fallbackConfig;
+}
+
+export async function getRuntimeConfigUpdate() {
+  return getCachedRemoteConfig();
 }
 
 export async function refreshRuntimeConfig() {
