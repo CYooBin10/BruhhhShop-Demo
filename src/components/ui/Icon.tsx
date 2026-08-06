@@ -12,6 +12,7 @@ type IconName =
   | "code"
   | "copy"
   | "cpu"
+  | "database"
   | "gamepad"
   | "globe"
   | "headphones"
@@ -47,6 +48,7 @@ const paths: Record<IconName, React.ReactNode> = {
   code: <><path d="m8 9-3 3 3 3" /><path d="m16 9 3 3-3 3" /><path d="m14 5-4 14" /></>,
   copy: <><rect width="12" height="12" x="8" y="8" rx="2" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></>,
   cpu: <><rect width="14" height="14" x="5" y="5" rx="2" /><path d="M9 9h6v6H9zM9 1v4M15 1v4M9 19v4M15 19v4M19 9h4M19 15h4M1 9h4M1 15h4" /></>,
+  database: <><ellipse cx="12" cy="5" rx="7" ry="3" /><path d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7" /></>,
   gamepad: <><path d="M10 15 8 17l-2-2" /><path d="M14 15l2 2 2-2" /><path d="M9 12h.01M15 12h.01" /><path d="M7.5 7h9A5.5 5.5 0 0 1 22 12.5v1A3.5 3.5 0 0 1 18.5 17h-1.1a3 3 0 0 1-2.4-1.2l-.6-.8h-4.8l-.6.8A3 3 0 0 1 6.6 17H5.5A3.5 3.5 0 0 1 2 13.5v-1A5.5 5.5 0 0 1 7.5 7Z" /><path d="M8 10v4M6 12h4" /></>,
   globe: <><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.3 2.5 3.3 5.5 3.3 9s-1 6.5-3.3 9c-2.3-2.5-3.3-5.5-3.3-9S9.7 5.5 12 3Z" /></>,
   headphones: <><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><path d="M4 14h3v5H5a1 1 0 0 1-1-1v-4ZM20 14h-3v5h2a1 1 0 0 0 1-1v-4Z" /></>,

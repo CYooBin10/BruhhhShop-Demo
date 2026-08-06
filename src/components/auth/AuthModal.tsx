@@ -52,35 +52,40 @@ export function AuthModal({ mode, onClose, onModeChange }: AuthModalProps) {
     const email = String(form.get("email") ?? "").trim().toLowerCase();
     setIsSubmitting(true);
 
-    const result = mode === "login"
-      ? await supabase.auth.signInWithPassword({ email, password })
-      : await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: window.location.origin,
-            data: { username: String(form.get("username") ?? "").trim() },
-          },
-        });
+    try {
+      const result = mode === "login"
+        ? await supabase.auth.signInWithPassword({ email, password })
+        : await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: window.location.origin,
+              data: { username: String(form.get("username") ?? "").trim() },
+            },
+          });
 
-    setIsSubmitting(false);
-    if (result.error) {
-      const authErrors: Record<string, string> = {
-        "Invalid login credentials": "Gmail hoặc mật khẩu không đúng.",
-        "User already registered": "Gmail này đã được đăng ký.",
-        "Email not confirmed": "Gmail chưa được xác nhận.",
-      };
-      setMessage(authErrors[result.error.message] ?? result.error.message);
-      return;
-    }
-    if (result.data.session) {
+      if (result.error) {
+        const authErrors: Record<string, string> = {
+          "Invalid login credentials": "Gmail hoặc mật khẩu không đúng.",
+          "User already registered": "Gmail này đã được đăng ký.",
+          "Email not confirmed": "Gmail chưa được xác nhận.",
+          "Email rate limit exceeded": "Gmail xác nhận đã vượt giới hạn. Thử lại sau ít phút.",
+        };
+        setMessage(authErrors[result.error.message] ?? result.error.message);
+        return;
+      }
+
       window.dispatchEvent(new Event("bruhhh-auth-changed"));
+      if (mode === "login") {
+        onClose();
+        return;
+      }
+      setMessage(result.data.session ? "Đăng ký thành công." : "Đăng ký thành công. Vui lòng kiểm tra Gmail để xác nhận tài khoản.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Không thể kết nối hệ thống đăng nhập.");
+    } finally {
+      setIsSubmitting(false);
     }
-    if (mode === "login") {
-      onClose();
-      return;
-    }
-    setMessage("Đăng ký thành công. Vui lòng kiểm tra Gmail để xác nhận tài khoản.");
   };
 
   const changeMode = (nextMode: AuthMode) => {

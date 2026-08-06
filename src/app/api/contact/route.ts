@@ -28,6 +28,7 @@ const PLANS = [
   "VPS 2-4",
   "VPS 2-8",
   "VPS 4-8",
+  "VPS 4-16",
   "VPS 8-16",
   "VPS 16-32",
   "Chưa xác định",

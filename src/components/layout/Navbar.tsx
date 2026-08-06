@@ -71,14 +71,17 @@ export function Navbar({ onAuth }: NavbarProps) {
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
-  const navigationItems = navigation.filter((item) => item.href !== "#bang-gia").map((item) => item.href === "#lien-he" ? { ...item, href: "/lien-he" } : item).flatMap((item, index) => index === 1 ? [{ label: "VPS", href: "/vps" }, item] : [item]);
+  const navigationItems = navigation.filter((item) => item.label !== "Trang chủ");
   const getNavigationHref = (href: string) => pathname === "/" || !href.startsWith("#") ? href : `/${href}`;
   const isNavigationActive = (href: string) => href === "/vps" ? pathname === "/vps" : href.startsWith("#") ? pathname === "/" && activeSection === href : pathname.startsWith(href);
   const signOut = async () => {
     const { supabase } = await import("@/lib/supabase");
     if (!supabase) return;
     const { error } = await supabase.auth.signOut();
-    if (!error) setUser(null);
+    if (!error) {
+      setUser(null);
+      window.dispatchEvent(new Event("bruhhh-auth-changed"));
+    }
   };
 
   return (
@@ -87,7 +90,7 @@ export function Navbar({ onAuth }: NavbarProps) {
         <Logo />
         <nav className={`desktop-nav ${menuOpen ? "is-open" : ""}`} aria-label="Điều hướng chính">
           {navigationItems.map((item) => (
-            <span className="nav-item-with-notice" key={item.href}><a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} onClick={closeMenu}>{item.label}</a>{item.label === "Liên hệ" ? <NotificationBell /> : null}</span>
+            <span className="nav-item-with-notice" key={item.href}><Link className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} onClick={closeMenu}>{item.label}</Link>{item.label === "Liên hệ" ? <NotificationBell /> : null}</span>
           ))}
         </nav>
         <div className="nav-actions">
@@ -97,7 +100,7 @@ export function Navbar({ onAuth }: NavbarProps) {
         </div>
       </div>
       <div id="main-navigation" className={`mobile-nav ${menuOpen ? "is-open" : ""}`}>
-        {navigationItems.map((item) => <a className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</a>)}
+        {navigationItems.map((item) => <Link className={isNavigationActive(item.href) ? "is-active" : ""} href={getNavigationHref(item.href)} key={item.href} onClick={closeMenu}>{item.label}</Link>)}
         {user ? <UserAccount username={user.user_metadata.username || "Tài khoản"} email={user.email ?? ""} mobile onSignOut={() => { closeMenu(); void signOut(); }} /> : <div className="mobile-auth-actions"><button className="button button-ghost" type="button" onClick={() => { closeMenu(); onAuth("login"); }}>Đăng nhập</button><button className="button button-primary" type="button" onClick={() => { closeMenu(); onAuth("register"); }}>Đăng ký</button></div>}
       </div>
     </header>

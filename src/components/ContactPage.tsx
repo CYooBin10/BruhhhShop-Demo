@@ -8,11 +8,10 @@ import { Icon } from "@/components/ui/Icon";
 
 const REQUEST_TYPES = ["Mua dịch vụ mới", "Sửa đổi cấu hình", "Nâng cấp – gia hạn", "Hỗ trợ kỹ thuật – sửa chữa", "Bảo hành – hoàn tiền", "Khiếu nại", "Khác"];
 const PURPOSES = ["Server Minecraft", "Website / API", "Bot Discord", "Ứng dụng chạy 24/7", "Lưu trữ dữ liệu", "Khác"];
-const PLANS = ["VPS 1-1", "VPS 1-2", "VPS 2-2", "VPS 2-4", "VPS 2-8", "VPS 4-8", "VPS 8-16", "VPS 16-32", "Chưa xác định"];
 const DURATIONS = ["Dưới 1 tháng", "1 – 3 tháng", "Trên 3 tháng", "Chưa rõ"];
 
 export function ContactPage() {
-  const { site } = useRuntimeConfig();
+  const { plans, site } = useRuntimeConfig();
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [error, setError] = useState("");
   const [user, setUser] = useState<User | null>(null);
@@ -28,9 +27,9 @@ export function ContactPage() {
       void supabase.auth.getUser().then(({ data }) => { if (active) setUser(data.user); });
     };
     loadUser();
-    supabase?.auth.onAuthStateChange((_event, session) => { if (active) setUser(session?.user ?? null); });
+    const subscription = supabase?.auth.onAuthStateChange((_event, session) => { if (active) setUser(session?.user ?? null); }).data.subscription;
     window.addEventListener("bruhhh-auth-changed", loadUser);
-    return () => { active = false; window.removeEventListener("bruhhh-auth-changed", loadUser); };
+    return () => { active = false; subscription?.unsubscribe(); window.removeEventListener("bruhhh-auth-changed", loadUser); };
   }, []);
 
   const setField = (field: keyof typeof form) => (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setForm((current) => ({ ...current, [field]: event.target.value }));
@@ -69,7 +68,7 @@ export function ContactPage() {
             <div className="contact-form-field contact-form-full"><label htmlFor={nameId}>Họ tên <span className="required-mark" title="Yêu cầu bắt buộc nhập">!</span></label><input id={nameId} maxLength={100} required placeholder="Tên của bạn" type="text" value={form.name} onChange={setField("name")} /></div>
             <div className="contact-form-field contact-form-full"><label htmlFor="contact-request-type">Loại yêu cầu <span className="required-mark" title="Yêu cầu bắt buộc nhập">!</span></label><select id="contact-request-type" required value={form.requestType} onChange={setField("requestType")}><option disabled value="">Chọn loại yêu cầu…</option>{REQUEST_TYPES.map((type) => <option key={type} value={type}>{type}</option>)}</select></div>
             <div className="contact-form-field"><label htmlFor="contact-purpose">Mục đích sử dụng <span className="required-mark" title="Yêu cầu bắt buộc nhập">!</span></label><select id="contact-purpose" required value={form.purpose} onChange={setField("purpose")}><option disabled value="">Chọn mục đích…</option>{PURPOSES.map((purpose) => <option key={purpose} value={purpose}>{purpose}</option>)}</select></div>
-            <div className="contact-form-field"><label htmlFor="contact-plan">Cấu hình mong muốn</label><select id="contact-plan" value={form.plan} onChange={setField("plan")}>{PLANS.map((plan) => <option key={plan} value={plan}>{plan}</option>)}</select></div>
+            <div className="contact-form-field"><label htmlFor="contact-plan">Cấu hình mong muốn</label><select id="contact-plan" value={form.plan} onChange={setField("plan")}><option value="Chưa xác định">Chưa xác định</option>{plans.map((plan) => <option key={plan.id} value={plan.name.replace("DiabloNode ", "")}>{plan.name.replace("DiabloNode ", "")}</option>)}</select></div>
             <div className="contact-form-field"><label htmlFor="contact-duration">Thời gian sử dụng <span className="required-mark" title="Yêu cầu bắt buộc nhập">!</span></label><select id="contact-duration" required value={form.duration} onChange={setField("duration")}><option disabled value="">Chọn thời gian…</option>{DURATIONS.map((duration) => <option key={duration} value={duration}>{duration}</option>)}</select></div>
             <div className="contact-form-field contact-form-full"><label htmlFor={messageId}>Mô tả chi tiết yêu cầu</label><textarea id={messageId} maxLength={2000} placeholder="Bạn cần mua gói nào? Muốn nâng cấp RAM/disk? VPS gặp lỗi gì, lỗi từ khi nào?… (không bắt buộc)" rows={6} value={form.message} onChange={setField("message")} /></div>
             <div className="contact-form-field contact-form-full contact-form-actions"><button className="button button-primary" disabled={status === "sending"} type="submit">{status === "sending" ? "Đang gửi…" : "Gửi yêu cầu"} <Icon name="arrow-up-right" /></button>{status === "success" ? <p className="contact-form-success"><Icon name="circle-check" /> Đã gửi thành công. Chúng tôi sẽ phản hồi trong thời gian sớm nhất.</p> : null}{status === "error" ? <p className="contact-form-error"><Icon name="close" /> {error}</p> : null}</div>
