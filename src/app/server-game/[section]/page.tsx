@@ -4,8 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Icon } from "@/components/ui/Icon";
 import { serverGameConfig, type ServerGameRankingKey } from "@/config/server-game";
+import { sellPriceCategories } from "@/config/server-game-sell-prices";
 
-const sections = ["gioi-thieu", "tinh-nang", "xep-hang", "tin-tuc", "wiki", "info", "discord", "choi-ngay"] as const;
+const sections = ["gioi-thieu", "tinh-nang", "xep-hang", "tin-tuc", "wiki", "gia-ban", "info", "discord", "choi-ngay"] as const;
 type Section = (typeof sections)[number];
 
 const sectionNames: Record<Section, string> = {
@@ -14,6 +15,7 @@ const sectionNames: Record<Section, string> = {
   "xep-hang": "Xếp hạng",
   "tin-tuc": "Tin tức",
   wiki: "Wiki",
+  "gia-ban": "Giá bán",
   info: "Thông tin máy chủ",
   discord: "Discord",
   "choi-ngay": "Chơi ngay",
@@ -44,6 +46,7 @@ export default async function ServerGameSectionPage({ params }: { params: Promis
           {section === "xep-hang" ? <RankingsPage /> : null}
           {section === "tin-tuc" ? <NewsPage /> : null}
           {section === "wiki" ? <WikiPage /> : null}
+          {section === "gia-ban" ? <SellPricesPage /> : null}
           {section === "info" ? <ServerInfoPage /> : null}
           {section === "discord" ? <DiscordPage /> : null}
           {section === "choi-ngay" ? <PlayPage /> : null}
@@ -63,7 +66,7 @@ function ServerGameNavigation() {
     <header className="game-nav">
       <Link className="game-logo" href="/server-game" aria-label="DiabloSMP - Trang chủ"><Image alt="" aria-hidden="true" className="game-logo-mark" height={34} priority src="/assets/image/logo_diablosmp.png" width={34} /><span>DIABLO<strong>SMP</strong></span></Link>
       <nav className="game-nav-links" aria-label="Điều hướng DiabloSMP">
-        <Link href="/server-game/tinh-nang">Tính năng</Link><Link href="/server-game/xep-hang">Xếp hạng</Link><Link href="/server-game/tin-tuc">Tin tức</Link><Link href="/server-game/wiki">Wiki</Link><Link href="/server-game/info">Thông tin</Link>
+        <Link href="/server-game/tinh-nang">Tính năng</Link><Link href="/server-game/xep-hang">Xếp hạng</Link><Link href="/server-game/tin-tuc">Tin tức</Link><Link href="/server-game/wiki">Wiki</Link><Link href="/server-game/gia-ban">Giá bán</Link><Link href="/server-game/info">Thông tin</Link>
       </nav>
       <div className="game-nav-actions"><Link className="game-nav-cta" href="/server-game/choi-ngay">Chơi ngay <Icon name="arrow-right" /></Link></div>
     </header>
@@ -89,6 +92,25 @@ function NewsPage() {
 
 function WikiPage() {
   return <SectionIntro title={<>Bắt đầu <span>đúng cách.</span></>} text="Hướng dẫn nhanh cho người mới. Cần hỏi thêm? Discord luôn có người hỗ trợ."><div className="game-subpage-wiki-grid"><div className="game-guide-ip"><small>ĐỊA CHỈ JAVA SERVER</small><strong>{serverGameConfig.javaAddress}</strong><span>Phiên bản: {serverGameConfig.version}</span></div><div className="game-guide-steps">{[["01", "Mở Minecraft", "Dùng Minecraft Java Edition phiên bản 1.21 trở lên."], ["02", "Thêm server", "Chọn Multiplayer, Add Server và nhập địa chỉ DiabloSMP."], ["03", "Nhận kit tân thủ", "Kết nối server, đọc rules và bắt đầu xây dựng." ]].map(([number, title, text]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{text}</p></div></article>)}</div></div><div className="game-subpage-faq"><h2>Hỏi nhanh</h2>{serverGameConfig.faqs.slice(0, 4).map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</div></SectionIntro>;
+}
+
+function SellPricesPage() {
+  const itemCount = sellPriceCategories.reduce((total, category) => total + category.items.length, 0);
+  const zeroPriceCount = sellPriceCategories.reduce((total, category) => total + category.items.filter(([, price]) => price === "0").length, 0);
+
+  return (
+    <SectionIntro title={<>Bảng giá sell <span>đang x5.</span></>} text="Giá bán một item cho server. Item giá 0 vẫn được giữ đúng theo bảng kinh tế DiabloSMP.">
+      <div className="game-sell-price-page">
+        <div className="game-sell-price-summary">
+          <div><small>TỔNG ITEM</small><strong>{itemCount}</strong><span>mặt hàng trong bảng giá</span></div>
+          <div><small>DANH MỤC</small><strong>{sellPriceCategories.length}</strong><span>nhóm vật phẩm</span></div>
+          <div><small>GIÁ 0</small><strong>{zeroPriceCount}</strong><span>không bán trực tiếp</span></div>
+        </div>
+        <nav className="game-sell-price-index" aria-label="Danh mục giá bán">{sellPriceCategories.map((category, index) => <a href={`#sell-price-${index + 1}`} key={category.title}><span>{String(index + 1).padStart(2, "0")}</span>{category.title}</a>)}</nav>
+        <div className="game-sell-price-sections">{sellPriceCategories.map((category, categoryIndex) => <section className="game-sell-price-category" id={`sell-price-${categoryIndex + 1}`} key={category.title}><div className="game-sell-price-category-heading"><span>{String(categoryIndex + 1).padStart(2, "0")}</span><h2>{category.title}</h2><small>{category.items.length} item</small></div><div className="game-sell-price-list"><div className="game-sell-price-columns" aria-hidden="true"><span>Item</span><span>Giá sell</span></div>{category.items.map(([name, price]) => <div className={`game-sell-price-row ${price === "0" ? "is-zero" : ""}`} key={name}><code>{name}</code><strong>${price}</strong></div>)}</div></section>)}</div>
+      </div>
+    </SectionIntro>
+  );
 }
 
 function ServerInfoPage() {
